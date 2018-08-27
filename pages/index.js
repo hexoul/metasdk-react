@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Login } from '../src/index.js';
 
 class TestIndex extends Component {
   
@@ -8,7 +9,10 @@ class TestIndex extends Component {
 
   render() {
     return(
+      <div>
         <p>Test page</p>
+        <Login />
+      </div>
     )
   }
 }
