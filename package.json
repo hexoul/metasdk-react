@@ -2,9 +2,9 @@
   "name": "metasdk-react",
   "version": "0.0.1",
   "description": "SDK",
-  "main": "source/index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,11 @@
   "bugs": {
     "url": "https://github.com/hexoul/metasdk-react/issues"
   },
-  "homepage": "https://github.com/hexoul/metasdk-react#readme"
+  "homepage": "https://github.com/hexoul/metasdk-react#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "next": "^6.1.1",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2"
+  }
 }
