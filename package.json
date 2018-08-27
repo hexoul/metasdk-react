@@ -1,7 +1,7 @@
 {
   "name": "metasdk-react",
-  "version": "0.0.1",
-  "description": "SDK",
+  "version": "0.0.3",
+  "description": "SDK to communicate between React and App using QRcode",
   "main": "src/index.js",
   "scripts": {
     "test": "node server.js"
@@ -21,9 +21,11 @@
   },
   "homepage": "https://github.com/hexoul/metasdk-react#readme",
   "dependencies": {
-    "express": "^4.16.3",
-    "next": "^6.1.1",
     "react": "^16.4.2",
     "react-dom": "^16.4.2"
+  },
+  "devDependencies": {
+    "express": "^4.16.3",
+    "next": "^6.1.1"
   }
 }
