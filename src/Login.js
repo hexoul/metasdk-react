@@ -28,8 +28,7 @@ class Login extends Component {
     render() {
         return (
             <p>
-                Login, 
-                {this.state.session ? this.state.session : ''}
+                Login, {this.state.session ? this.state.session : ''}
             </p>
         );
     }
