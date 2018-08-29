@@ -1,6 +1,23 @@
 import React, {Component} from 'react';
 
-export default class Login extends Component {
+function makeSessionID() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (var i = 0; i < 5; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+}
+
+const Login = () => {
+    return (
+        <p>Login</p>
+    )
+};
+
+export default Login;
+
+/*
+class Login extends Component {
 
     static async getInitialProps({ query: { setInfo } }) {
         const initProps = {
@@ -15,15 +32,6 @@ export default class Login extends Component {
           session: this.makeSessionID(),
         };
     }
-    
-    makeSessionID() {
-        var text = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        for (var i = 0; i < 5; i++)
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        console.log('session', text);
-        return text;
-    }
 
     render() {
         return (
@@ -33,3 +41,4 @@ export default class Login extends Component {
         );
     }
 }
+*/

@@ -4,6 +4,7 @@
   "description": "SDK to communicate between React and App using QRcode",
   "main": "src/index.js",
   "scripts": {
+    "dev": "node server.js",
     "test": "node server.js"
   },
   "repository": {

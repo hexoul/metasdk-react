@@ -11,7 +11,9 @@ class TestIndex extends Component {
     return(
       <div>
         <p>Test page</p>
-        <Login />
+        <Login
+          text='123'
+        />
       </div>
     )
   }
