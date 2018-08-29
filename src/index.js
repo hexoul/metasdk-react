@@ -1,7 +1,22 @@
-import Login from './Login';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
-export * from './Login';
+import styles from './styles.css'
 
-module.exports = {
-    Login,
-};
+export default class ExampleComponent extends Component {
+  static propTypes = {
+    text: PropTypes.string
+  }
+
+  render() {
+    const {
+      text
+    } = this.props
+
+    return (
+      <div className={styles.test}>
+        Example Component: {text}
+      </div>
+    )
+  }
+}

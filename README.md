@@ -1,14 +1,31 @@
 # metasdk-react
-SDK to communicate between React and App using QRcode
 
-## Components
-1. Login
-2. SendTransaction
+> SDK to communicate between React and App using QRCode
 
-## How to test
+[![NPM](https://img.shields.io/npm/v/metasdk-react.svg)](https://www.npmjs.com/package/metasdk-react) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
+## Install
+
 ```bash
-npm install
-npm run test
+npm install --save metasdk-react
 ```
 
-open http://localhost:3000/
+## Usage
+
+```jsx
+import React, { Component } from 'react'
+
+import Login from 'metasdk-react'
+
+class Example extends Component {
+  render () {
+    return (
+      <Login />
+    )
+  }
+}
+```
+
+## License
+
+MIT © [hexoul](https://github.com/hexoul)
