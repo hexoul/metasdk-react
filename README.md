@@ -10,21 +10,31 @@
 npm install --save metasdk-react
 ```
 
+## Components
+1. Login
+2. SendTransaction
+
 ## Usage
 
 ```jsx
 import React, { Component } from 'react'
 
-import Login from 'metasdk-react'
+import { Login, SendTransaction } from 'metasdk-react'
 
 class Example extends Component {
   render () {
     return (
-      <Login />
+      <div>
+        <Login />
+        <SendTransaction />
+      </div>
     )
   }
 }
 ```
+
+## Thanks to
+[create-react-library](https://www.npmjs.com/package/create-react-library)
 
 ## License
 
