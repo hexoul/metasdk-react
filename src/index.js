@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import styles from './styles.css'
 
-export default class ExampleComponent extends Component {
+export default class Login extends Component {
   static propTypes = {
     text: PropTypes.string
   }
@@ -15,7 +15,7 @@ export default class ExampleComponent extends Component {
 
     return (
       <div className={styles.test}>
-        Example Component: {text}
+        Login: {text}
       </div>
     )
   }

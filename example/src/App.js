@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import ExampleComponent from 'metasdk-react'
+import Login from 'metasdk-react'
 
 export default class App extends Component {
   render () {
