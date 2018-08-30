@@ -7,7 +7,8 @@ const NodeRSA = require('node-rsa');
 
 export default class Login extends Component {
   static propTypes = {
-    text: PropTypes.string
+    request: PropTypes.array,
+    service: PropTypes.string,
   }
 
   constructor() {
@@ -37,15 +38,20 @@ export default class Login extends Component {
       .replace(/\s+|\n\r|\n|\r$/gm, '');
     pubkey = encodeURIComponent(pubkey);
     
-    this.baseRequestUri = "meta://information?request=name&request=email&service=https%3A%2F%2Fmetastellar.metadium.com&callback=http%3A%2F%2F13.125.251.87%3A3000/metainfo?session=";
+    // URI for service
+    this.baseRequestUri = "meta://information?service=";
+    this.baseRequestUri += this.props.service;
+    // URI for request
+    this.props.request.map((req) => {
+      this.baseRequestUri += "&request=" + req;
+    });
+    // URI for callback
+    this.baseRequestUri += "&callback=http%3A%2F%2F13.125.251.87%3A3000/metainfo?session=";
+    
     this.setState({requestUri: this.baseRequestUri + this.state.session + "&public_key=" + pubkey});
   }
 
   render() {
-    const {
-      text
-    } = this.props
-
     return (
       <div className={styles.test}>
         Session: {this.state.session != undefined && this.state.session} <br />

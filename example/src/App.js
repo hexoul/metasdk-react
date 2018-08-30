@@ -6,7 +6,9 @@ export default class App extends Component {
   render () {
     return (
       <div>
-        <Login text='Modern React component module' />
+        <Login
+          request={['name', 'email']}
+        />
       </div>
     )
   }
