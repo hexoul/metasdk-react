@@ -5,6 +5,10 @@
   "author": "hexoul",
   "license": "MIT",
   "repository": "hexoul/metasdk-react",
+  "keywords": [
+    "Ethereum",
+    "DApp"
+  ],
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
