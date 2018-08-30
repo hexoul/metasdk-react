@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Button, Popup } from 'semantic-ui-react';
 
 import styles from './styles.css'
 
 const NodeRSA = require('node-rsa');
+var QRCode = require('qrcode.react');
 
 export default class Login extends Component {
   static propTypes = {
     request: PropTypes.array,
     service: PropTypes.string,
+    callback: PropTypes.func,
   }
 
   constructor() {
@@ -39,23 +42,43 @@ export default class Login extends Component {
     pubkey = encodeURIComponent(pubkey);
     
     // URI for service
-    this.baseRequestUri = "meta://information?service=";
-    this.baseRequestUri += this.props.service;
+    this.baseRequestUri = "meta://information?service=" + this.props.service;
     // URI for request
-    this.props.request.map((req) => {
-      this.baseRequestUri += "&request=" + req;
-    });
+    this.props.request.map((req) => {this.baseRequestUri += "&request=" + req;});
     // URI for callback
-    this.baseRequestUri += "&callback=http%3A%2F%2F13.125.251.87%3A3000/metainfo?session=";
-    
+    this.baseRequestUri += "&callback=http%3A%2F%2Fabc.com/info?session=";
+
     this.setState({requestUri: this.baseRequestUri + this.state.session + "&public_key=" + pubkey});
+  }
+
+  onOpenLogin() {
+    this.interval = setInterval(() => {
+      //this.checkResponse();
+    }, 2000);
+  }
+
+  onCloseLogin() {
+    clearInterval(this.interval);
   }
 
   render() {
     return (
-      <div className={styles.test}>
+      <div>
+        <div className={styles.test}>
         Session: {this.state.session != undefined && this.state.session} <br />
         Uri: {this.state.requestUri != undefined && this.state.requestUri}
+        </div>
+        
+        {this.state.requestUri != undefined && this.state.requestUri != '' &&
+        <Popup trigger={<Button>Login</Button>}
+          on='click'
+          onOpen={() => this.onOpenLogin()}
+          onClose={() => this.onCloseLogin()}
+          verticalOffset={20}
+          position='bottom right'
+          style={{padding: '2em'}}>
+            <QRCode value={this.state.requestUri} size='128'/>
+        </Popup>}
       </div>
     )
   }
