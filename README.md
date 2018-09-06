@@ -23,10 +23,16 @@ import React, { Component } from 'react'
 import { Login, SendTransaction } from 'metasdk-react'
 
 class Example extends Component {
+  callbackExample(arg) {}
+  
   render () {
     return (
       <div>
-        <Login />
+        <Login
+          request={['name', 'email']}
+          service='example'
+          callback={this.callbackExample}
+        />
         <SendTransaction />
       </div>
     )

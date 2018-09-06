@@ -16,6 +16,7 @@ export default class Login extends Component {
 
   constructor() {
     super();
+    this.reqinfo = {};
     this.state = {
       session: this.makeSessionID(),
       requestUri: '',
@@ -55,6 +56,7 @@ export default class Login extends Component {
     this.interval = setInterval(() => {
       //this.checkResponse();
     }, 2000);
+    this.props.callback(this.reqinfo);
   }
 
   onCloseLogin() {
@@ -68,7 +70,7 @@ export default class Login extends Component {
         Session: {this.state.session != undefined && this.state.session} <br />
         Uri: {this.state.requestUri != undefined && this.state.requestUri}
         </div>
-        
+
         {this.state.requestUri != undefined && this.state.requestUri != '' &&
         <Popup trigger={<Button>Login</Button>}
           on='click'
