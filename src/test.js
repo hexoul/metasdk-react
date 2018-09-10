@@ -1,7 +1,7 @@
-import Login from './'
+import Request from './'
 
-describe('Login', () => {
+describe('Request', () => {
   it('is truthy', () => {
-    expect(Login).toBeTruthy()
+    expect(Request).toBeTruthy()
   })
 })

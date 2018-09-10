@@ -13,6 +13,7 @@ npm install --save metasdk-react
 ## Components
 
 1. Login
+2. Request
 2. SendTransaction
 
 ## Usage
@@ -20,7 +21,7 @@ npm install --save metasdk-react
 ```jsx
 import React, { Component } from 'react'
 
-import { Login, SendTransaction } from 'metasdk-react'
+import { Login, Request, SendTransaction } from 'metasdk-react'
 
 class Example extends Component {
   callbackExample(arg) {}
@@ -28,7 +29,7 @@ class Example extends Component {
   render () {
     return (
       <div>
-        <Login
+        <Request
           request={['name', 'email']}
           service='example'
           callback={this.callbackExample}

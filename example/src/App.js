@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import Login from 'metasdk-react'
+import { Request } from 'metasdk-react'
 
 export default class App extends Component {
 
@@ -11,7 +11,7 @@ export default class App extends Component {
   render () {
     return (
       <div>
-        <Login
+        <Request
           request={['name', 'email']}
           service='example'
           callback={this.callbackExample}
