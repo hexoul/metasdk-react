@@ -19,7 +19,14 @@ export default class App extends Component {
           callback={this.callbackExample}
         />
         <hr />
-        <SendTransaction />
+        <SendTransaction 
+          request={['to', 'value1','data1']}
+        />
+        <SendTransaction
+          to='0x8101487270f5411cf213b8d348a2ab46df66245d'
+          value='value2'
+          data='data1'
+         />
       </div>
     )
   }
