@@ -11,15 +11,26 @@ export default class App extends Component {
   render () {
     return (
       <div>
-        <Login />
+        <Login
+          service='example'
+          callback={this.callbackExample}
+        />
         <hr />
+
         <Request
           request={['name', 'email']}
           service='example'
           callback={this.callbackExample}
         />
         <hr />
-        <SendTransaction />
+        
+        <SendTransaction
+          to='0xff'
+          value='0x01'
+          data='0x02'
+          service='example'
+          callback={this.callbackExample}
+        />
       </div>
     )
   }

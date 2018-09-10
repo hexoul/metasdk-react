@@ -29,12 +29,26 @@ class Example extends Component {
   render () {
     return (
       <div>
+        <Login
+          service='example'
+          callback={this.callbackExample}
+        />
+        <hr />
+        
         <Request
           request={['name', 'email']}
           service='example'
           callback={this.callbackExample}
         />
-        <SendTransaction />
+        <hr />
+
+        <SendTransaction
+          to='0xff'
+          value='0x01'
+          data='0x02'
+          service='example'
+          callback={this.callbackExample}
+        />
       </div>
     )
   }
