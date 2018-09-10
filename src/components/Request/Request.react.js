@@ -47,20 +47,51 @@ export default class Request extends Component {
     // URI for request
     this.props.request.map((req) => {this.baseRequestUri += "&request=" + req;});
     // URI for callback
-    this.baseRequestUri += "&callback=http%3A%2F%2Fabc.com/info?session=";
+    this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
+    // URI for pubkey
+    this.baseRequestUri += "&public_key=" + pubkey;
 
-    this.setState({requestUri: this.baseRequestUri + this.state.session + "&public_key=" + pubkey});
+    this.setState({requestUri: this.baseRequestUri});
   }
 
   onOpenRequest() {
     this.interval = setInterval(() => {
-      //this.checkResponse();
+      this.checkResponse();
     }, 2000);
-    this.props.callback(this.reqinfo);
   }
 
   onCloseRequest() {
     clearInterval(this.interval);
+  }
+
+  checkResponse() {
+    https.request({
+      host: '2g5198x91e.execute-api.ap-northeast-2.amazonaws.com',
+      path: '/test?key=' + this.state.session,
+    }, (res) => {
+      let data = '';
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+      res.on('end', () => {
+        if (data !== '') {
+          clearInterval(this.interval);
+          /*
+          var ret = decodeURIComponent(data).split(',');
+          var secret = crypto.privateDecrypt({key: this.privkey, padding: constants.RSA_PKCS1_PADDING}, Buffer.from(ret[0], 'base64'));
+          this.props.request.map((req) => {
+            let nDecipher = crypto.createDecipheriv('aes-256-ecb', secret, '');
+            let data = nDecipher.update(Buffer.from(ret[1], 'base64'), 'base64', 'utf-8');
+            data += nDecipher.final('utf-8');
+            //this.reqInfo;
+          });
+          */
+          this.props.callback(this.reqinfo);
+        }
+      });
+    }).on('error', (err) => {
+      console.log('error', err);
+    }).end();
   }
 
   render() {

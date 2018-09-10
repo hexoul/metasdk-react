@@ -1,6 +1,5 @@
-import React, { Component } from 'react'
-
-import { Login, Request, SendTransaction } from 'metasdk-react'
+import React, { Component } from 'react';
+import { Login, Request, SendTransaction } from 'metasdk-react';
 
 export default class App extends Component {
 
@@ -23,7 +22,7 @@ export default class App extends Component {
           callback={this.callbackExample}
         />
         <hr />
-        
+
         <SendTransaction
           to='0xff'
           value='0x01'

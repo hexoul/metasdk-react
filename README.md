@@ -19,9 +19,8 @@ npm install --save metasdk-react
 ## Usage
 
 ```jsx
-import React, { Component } from 'react'
-
-import { Login, Request, SendTransaction } from 'metasdk-react'
+import React, { Component } from 'react';
+import { Login, Request, SendTransaction } from 'metasdk-react';
 
 class Example extends Component {
   callbackExample(arg) {}
@@ -34,7 +33,7 @@ class Example extends Component {
           callback={this.callbackExample}
         />
         <hr />
-        
+
         <Request
           request={['name', 'email']}
           service='example'
@@ -53,6 +52,15 @@ class Example extends Component {
     )
   }
 }
+```
+
+## Test
+```
+cd metasdk-react
+npm start
+[Ctrl+C]
+cd example
+npm start
 ```
 
 ## Thanks to
