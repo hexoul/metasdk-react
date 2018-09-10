@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Request } from 'metasdk-react'
+import { Login, Request, SendTransaction } from 'metasdk-react'
 
 export default class App extends Component {
 
@@ -11,11 +11,15 @@ export default class App extends Component {
   render () {
     return (
       <div>
+        <Login />
+        <hr />
         <Request
           request={['name', 'email']}
           service='example'
           callback={this.callbackExample}
         />
+        <hr />
+        <SendTransaction />
       </div>
     )
   }
