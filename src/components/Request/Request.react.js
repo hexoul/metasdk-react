@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popup } from 'semantic-ui-react';
 
+import MakeSessionID from '../util';
 import styles from './styles.css';
 
 const NodeRSA = require('node-rsa');
@@ -19,17 +20,9 @@ export default class Request extends Component {
     super();
     this.reqinfo = {};
     this.state = {
-      session: this.makeSessionID(),
+      session: MakeSessionID(),
       requestUri: '',
     };
-  }
-
-  makeSessionID() {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (var i = 0; i < 8; i++)
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    return text;
   }
 
   componentDidMount() {
@@ -97,13 +90,10 @@ export default class Request extends Component {
   }
 
   render() {
+    console.log('Request session ID', this.state.session);
+
     return (
       <div>
-        <div className={styles.test}>
-        Session: {this.state.session != undefined && this.state.session} <br />
-        Uri: {this.state.requestUri != undefined && this.state.requestUri}
-        </div>
-
         {this.state.requestUri != undefined && this.state.requestUri != '' &&
         <Popup trigger={<Button>Request</Button>}
           on='click'

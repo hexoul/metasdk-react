@@ -9,7 +9,11 @@ export default class App extends Component {
   }
 
   callbackExample(arg) {
-    console.log('callbackExample', arg)
+    console.log('callbackExample', arg);
+  }
+
+  requestCallbackExample(arg) {
+    console.log('requestCallbackExample', arg);
     this.request.map((req) => {
       console.log('got', req, arg[req]);
       return req;
@@ -28,7 +32,7 @@ export default class App extends Component {
         <Request
           request={this.request}
           service='example'
-          callback={this.callbackExample}
+          callback={this.requestCallbackExample}
         />
         <hr />
 
