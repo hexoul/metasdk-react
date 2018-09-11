@@ -6,6 +6,7 @@ var QRCode = require('qrcode.react');
 
 export default class SendTransaction extends Component {
   static propTypes = {
+    request: PropTypes.any,
     to: PropTypes.string,
     value: PropTypes.string,
     data: PropTypes.string,
@@ -21,13 +22,12 @@ export default class SendTransaction extends Component {
   componentDidMount() {
     this.baseRequestUri = "meta://transaction?to=";
     if(this.props.request != undefined) {
-      this.baseRequestUri += this.props.request.to + "&value=" + this.props.request.value + "&data=" + this.props.request.data;
+      this.baseRequestUri += this.props.request.params[0].to + "&value=" + this.props.request.params[0].value + "&data=" + this.props.request.params[0].data;
     }
     else if(this.props.to != undefined && this.props.to != '') {
       this.baseRequestUri += this.props.to + "&value=" + this.props.value + "&data=" + this.props.data;
     }
 
-    console.log('baseRequestUri', this.baseRequestUri);
     this.setState({trxRequestUri: this.baseRequestUri});
   }
 
