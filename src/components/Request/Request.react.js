@@ -6,6 +6,7 @@ import styles from './styles.css';
 
 const NodeRSA = require('node-rsa');
 var QRCode = require('qrcode.react');
+var https = require('https');
 
 export default class Request extends Component {
   static propTypes = {
@@ -26,7 +27,7 @@ export default class Request extends Component {
   makeSessionID() {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    for (var i = 0; i < 5; i++)
+    for (var i = 0; i < 8; i++)
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
   }
@@ -76,16 +77,16 @@ export default class Request extends Component {
       res.on('end', () => {
         if (data !== '') {
           clearInterval(this.interval);
-          /*
-          var ret = decodeURIComponent(data).split(',');
-          var secret = crypto.privateDecrypt({key: this.privkey, padding: constants.RSA_PKCS1_PADDING}, Buffer.from(ret[0], 'base64'));
+          var json = JSON.parse(data);
+          var secret = crypto.privateDecrypt({key: this.privkey, padding: constants.RSA_PKCS1_PADDING}, Buffer.from(json['secret'], 'base64'));
           this.props.request.map((req) => {
+            if (json['data'][req] == undefined || json['data'][req] == '') return;
+
             let nDecipher = crypto.createDecipheriv('aes-256-ecb', secret, '');
-            let data = nDecipher.update(Buffer.from(ret[1], 'base64'), 'base64', 'utf-8');
+            let data = nDecipher.update(Buffer.from(json['data'][req]['value'], 'base64'), 'base64', 'utf-8');
             data += nDecipher.final('utf-8');
-            //this.reqInfo;
+            this.reqinfo[req] = data;
           });
-          */
           this.props.callback(this.reqinfo);
         }
       });

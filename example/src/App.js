@@ -3,8 +3,16 @@ import { Login, Request, SendTransaction } from 'metasdk-react';
 
 export default class App extends Component {
 
+  constructor() {
+    super();
+    this.request = ['name', 'email'];
+  }
+
   callbackExample(arg) {
-    console.log('callbackExample')
+    console.log('callbackExample', arg)
+    this.request.map((req) => {
+      console.log('got', req, arg[req]);
+    });
   }
 
   render () {
@@ -17,7 +25,7 @@ export default class App extends Component {
         <hr />
 
         <Request
-          request={['name', 'email']}
+          request={this.request}
           service='example'
           callback={this.callbackExample}
         />

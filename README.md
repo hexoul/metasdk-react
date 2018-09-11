@@ -18,6 +18,8 @@ npm install --save metasdk-react
 
 ## Usage
 
+NOTE: Enabling CORS is necessary
+
 ```jsx
 import React, { Component } from 'react';
 import { Login, Request, SendTransaction } from 'metasdk-react';
