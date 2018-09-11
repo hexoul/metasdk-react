@@ -19,9 +19,10 @@ export default class SendTransaction extends Component {
   }
 
   componentDidMount() {
+    console.log('this.props.request', this.props.request);
     this.baseRequestUri = "meta://transaction?to=";
     if(this.props.request != undefined) {
-      this.baseRequestUri += this.props.request.to + "&value=" + this.props.request.value + "&data=" + this.props.request.data;
+      this.baseRequestUri += this.props.request.params[0].to + "&value=" + this.props.request.params[0].value + "&data=" + this.props.request.params[0].data;
     }
     else if(this.props.to != undefined && this.props.to != '') {
       this.baseRequestUri += this.props.to + "&value=" + this.props.value + "&data=" + this.props.data;
