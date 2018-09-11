@@ -28,7 +28,6 @@ export default class SendTransaction extends Component {
 
       this.setState({trxRequestUri: this.baseRequestUri});
     }
-
   }
 
   onOpenLogin() {
@@ -44,10 +43,6 @@ export default class SendTransaction extends Component {
   render() {
     return (
       <div>
-        <div className={styles.test}>
-          Uri: {this.state.trxRequestUri != undefined && this.state.trxRequestUri} <br />
-        </div>
-
         <div>
         {this.state.trxRequestUri != undefined && this.state.trxRequestUri != '' &&
         <Popup trigger={<Button>SendTransaction</Button>}

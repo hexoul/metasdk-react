@@ -18,14 +18,6 @@ export default class App extends Component {
       web3 = new Web3(window.web3.currentProvider);
       BNB = new web3.eth.Contract(compiledBNB,'0x763529b9ECE8694442FC7CAA2bEb305D6452B56d');
 
-      /* Test SendTransaction 
-      BNB.methods.transfer('0xd396ce692b3c735d9ebd4ed0407c9df17efcee91',web3.utils.toWei('0.1', 'wei')).send({from: "0xd396ce692b3c735d9ebd4ed0407c9df17efcee90", value: web3.utils.toWei('0', 'ether'), gasPrice: '1'})
-      .on('transactionHash',function(hash) {
-        console.log('transactionHash : '+hash);
-      }).on('confirmation', function(confirmationNumber, receipt) {
-        console.log('confirmation : '+confirmationNumber);
-      }).on('error', console.error);*/
-
       var request = BNB.methods.transfer('0xd396ce692b3c735d9ebd4ed0407c9df17efcee91',web3.utils.toWei('0', 'ether')).send.request({from: "", value: web3.utils.toWei('0', 'ether'), gasPrice: '1'})
       this.trxRequest = [request.params[0].to, request.params[0].value, request.params[0].data]; 
       
