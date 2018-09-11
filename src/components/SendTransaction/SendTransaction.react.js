@@ -63,7 +63,7 @@ export default class SendTransaction extends Component {
           position='bottom right'
           style={{padding: '2em'}}>
             <QRCode value={this.state.trxRequestUri} size='128'/>
-        </Popup>}
+        </Popup>
         </div>
       </div>
     )

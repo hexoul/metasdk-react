@@ -18,10 +18,11 @@ npm install --save metasdk-react
 
 ## Usage
 
-```jsx
-import React, { Component } from 'react'
+NOTE: Enabling CORS is necessary
 
-import { Login, Request, SendTransaction } from 'metasdk-react'
+```jsx
+import React, { Component } from 'react';
+import { Login, Request, SendTransaction } from 'metasdk-react';
 
 class Example extends Component {
   callbackExample(arg) {}
@@ -29,16 +30,39 @@ class Example extends Component {
   render () {
     return (
       <div>
+        <Login
+          service='example'
+          callback={this.callbackExample}
+        />
+        <hr />
+
         <Request
           request={['name', 'email']}
           service='example'
           callback={this.callbackExample}
         />
-        <SendTransaction />
+        <hr />
+
+        <SendTransaction
+          to='0xff'
+          value='0x01'
+          data='0x02'
+          service='example'
+          callback={this.callbackExample}
+        />
       </div>
     )
   }
 }
+```
+
+## Test
+```
+cd metasdk-react
+npm start
+[Ctrl+C]
+cd example
+npm start
 ```
 
 ## Thanks to
