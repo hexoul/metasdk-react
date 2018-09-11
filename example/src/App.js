@@ -24,6 +24,7 @@ export default class App extends Component {
     return (
       <div>
         <Login
+          data='testmsg'
           service='example'
           callback={this.callbackExample}
         />

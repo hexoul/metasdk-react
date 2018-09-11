@@ -31,6 +31,7 @@ class Example extends Component {
     return (
       <div>
         <Login
+          data='testmsg'
           service='example'
           callback={this.callbackExample}
         />
