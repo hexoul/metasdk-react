@@ -86,6 +86,7 @@ export default class Request extends Component {
             let data = nDecipher.update(Buffer.from(json['data'][req]['value'], 'base64'), 'base64', 'utf-8');
             data += nDecipher.final('utf-8');
             this.reqinfo[req] = data;
+            return req;
           });
           this.props.callback(this.reqinfo);
         }

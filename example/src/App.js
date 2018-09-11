@@ -12,6 +12,7 @@ export default class App extends Component {
     console.log('callbackExample', arg)
     this.request.map((req) => {
       console.log('got', req, arg[req]);
+      return req;
     });
   }
 
