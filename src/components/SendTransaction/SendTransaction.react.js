@@ -9,9 +9,6 @@ export default class SendTransaction extends Component {
   constructor() {
     super();
     this.state = {
-      to: '',
-      value: '',
-      data: '',
       trxRequestUri: '',
     }
   }
@@ -22,14 +19,14 @@ export default class SendTransaction extends Component {
       + "&value=" + this.props.request[1]
       + "&data=" + this.props.request[2];
 
-      this.setState({trxRequestUri: this.baseRequestUri, to: this.props.request[0], value: this.props.request[1], data: this.props.request[2]});
+      this.setState({trxRequestUri: this.baseRequestUri});
     }
     else if(this.props.to != undefined) {
       this.baseRequestUri = "meta://transaction?to=" + this.props.to 
       + "&value=" + this.props.value
       + "&data=" + this.props.data;
 
-      this.setState({trxRequestUri: this.baseRequestUri, to: this.props.to, value: this.props.value, data: this.props.data});
+      this.setState({trxRequestUri: this.baseRequestUri});
     }
 
   }
@@ -49,12 +46,10 @@ export default class SendTransaction extends Component {
       <div>
         <div className={styles.test}>
           Uri: {this.state.trxRequestUri != undefined && this.state.trxRequestUri} <br />
-          to: {this.state.to != undefined && this.state.to} <br />
-          value: {this.state.value != undefined && this.state.value} <br />
-          data: {this.state.data != undefined && this.state.data} <br />
         </div>
 
         <div>
+        {this.state.trxRequestUri != undefined && this.state.trxRequestUri != '' &&
         <Popup trigger={<Button>SendTransaction</Button>}
           on='click'
           onOpen={() => this.onOpenLogin()}
@@ -64,6 +59,7 @@ export default class SendTransaction extends Component {
           style={{padding: '2em'}}>
             <QRCode value={this.state.trxRequestUri} size='128'/>
         </Popup>
+        }
         </div>
       </div>
     )
