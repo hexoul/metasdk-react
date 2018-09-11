@@ -1,21 +1,61 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Button, Popup } from 'semantic-ui-react';
+
+import styles from './styles.css';
+
+var QRCode = require('qrcode.react');
 
 export default class SendTransaction extends Component {
-  static propTypes = {
-    request: PropTypes.array,
-    service: PropTypes.string,
-    callback: PropTypes.func,
-  }
-
   constructor() {
     super();
+    this.state = {
+      trxRequestUri: '',
+    }
+  }
+
+  componentDidMount() {
+    if(this.props.request != undefined) {
+      this.baseRequestUri = "meta://transaction?to=" + this.props.request[0]
+      + "&value=" + this.props.request[1]
+      + "&data=" + this.props.request[2];
+
+      this.setState({trxRequestUri: this.baseRequestUri});
+    }
+    else if(this.props.to != undefined) {
+      this.baseRequestUri = "meta://transaction?to=" + this.props.to 
+      + "&value=" + this.props.value
+      + "&data=" + this.props.data;
+
+      this.setState({trxRequestUri: this.baseRequestUri});
+    }
+  }
+
+  onOpenLogin() {
+    this.interval = setInterval(() => {
+      //this.checkResponse();
+    }, 2000);
+  }
+
+  onCloseLogin() {
+    clearInterval(this.interval);
   }
 
   render() {
     return (
       <div>
-        SendTransaction
+        <div>
+        {this.state.trxRequestUri != undefined && this.state.trxRequestUri != '' &&
+        <Popup trigger={<Button>SendTransaction</Button>}
+          on='click'
+          onOpen={() => this.onOpenLogin()}
+          onClose={() => this.onCloseLogin()}
+          verticalOffset={20}
+          position='bottom right'
+          style={{padding: '2em'}}>
+            <QRCode value={this.state.trxRequestUri} size='128'/>
+        </Popup>
+        }
+        </div>
       </div>
     )
   }
