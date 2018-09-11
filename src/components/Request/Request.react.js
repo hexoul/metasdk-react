@@ -10,6 +10,7 @@ var QRCode = require('qrcode.react');
 var https = require('https');
 
 export default class Request extends Component {
+  
   static propTypes = {
     request: PropTypes.array,
     service: PropTypes.string,
@@ -90,8 +91,6 @@ export default class Request extends Component {
   }
 
   render() {
-    console.log('Request session ID', this.state.session);
-
     return (
       <div>
         {this.state.requestUri != undefined && this.state.requestUri != '' &&

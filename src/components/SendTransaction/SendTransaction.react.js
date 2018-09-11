@@ -5,6 +5,7 @@ import { Button, Popup } from 'semantic-ui-react';
 var QRCode = require('qrcode.react');
 
 export default class SendTransaction extends Component {
+  
   static propTypes = {
     request: PropTypes.any,
     to: PropTypes.string,
