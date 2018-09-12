@@ -8,6 +8,8 @@ import styles from './styles.css';
 const NodeRSA = require('node-rsa');
 var QRCode = require('qrcode.react');
 var https = require('https');
+var constants = require('constants');
+var crypto = require('crypto');
 
 export default class Request extends Component {
   
