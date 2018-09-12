@@ -32,32 +32,33 @@ export default class SendTransaction extends Component {
     this.setState({trxRequestUri: this.baseRequestUri});
   }
 
-  onOpenLogin() {
+  onOpenSendTransaction() {
     this.interval = setInterval(() => {
-      //this.checkResponse();
+      this.checkResponse();
     }, 2000);
   }
 
-  onCloseLogin() {
+  onCloseSendTransaction() {
     clearInterval(this.interval);
+  }
+
+  checkResponse() {
+    // TxID check
   }
 
   render() {
     return (
       <div>
-        <div>
         {this.state.trxRequestUri != undefined && this.state.trxRequestUri != '' &&
         <Popup trigger={<Button>SendTransaction</Button>}
           on='click'
-          onOpen={() => this.onOpenLogin()}
-          onClose={() => this.onCloseLogin()}
+          onOpen={() => this.onOpenSendTransaction()}
+          onClose={() => this.onCloseSendTransaction()}
           verticalOffset={20}
           position='bottom right'
           style={{padding: '2em'}}>
             <QRCode value={this.state.trxRequestUri} size='128'/>
-        </Popup>
-        }
-        </div>
+        </Popup>}
       </div>
     )
   }
