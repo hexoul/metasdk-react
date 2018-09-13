@@ -1,13 +1,15 @@
 {
   "name": "metasdk-react",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "SDK to communicate between React and App using QRCode",
   "author": "hexoul",
   "license": "MIT",
   "repository": "hexoul/metasdk-react",
   "keywords": [
     "Ethereum",
-    "DApp"
+    "DApp",
+    "React",
+    "QRCode"
   ],
   "main": "dist/index.js",
   "module": "dist/index.es.js",
