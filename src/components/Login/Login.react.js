@@ -8,6 +8,7 @@ var QRCode = require('qrcode.react');
 var https = require('https');
 
 export default class Login extends Component {
+  
   static propTypes = {
     data: PropTypes.string,
     service: PropTypes.string,
@@ -69,7 +70,16 @@ export default class Login extends Component {
   render() {
     return (
       <div>
-        Login
+        {this.state.requestUri != undefined && this.state.requestUri != '' &&
+        <Popup trigger={<Button>Login</Button>}
+          on='click'
+          onOpen={() => this.onOpenLogin()}
+          onClose={() => this.onCloseLogin()}
+          verticalOffset={20}
+          position='bottom right'
+          style={{padding: '2em'}}>
+            <QRCode value={this.state.requestUri} size='128'/>
+        </Popup>}
       </div>
     )
   }

@@ -5,7 +5,9 @@ import { Button, Popup } from 'semantic-ui-react';
 var QRCode = require('qrcode.react');
 
 export default class SendTransaction extends Component {
+  
   static propTypes = {
+    request: PropTypes.any,
     to: PropTypes.string,
     value: PropTypes.string,
     data: PropTypes.string,
@@ -28,36 +30,36 @@ export default class SendTransaction extends Component {
       this.baseRequestUri += this.props.to + "&value=" + this.props.value + "&data=" + this.props.data;
     }
 
-    console.log('baseRequestUri', this.baseRequestUri);
     this.setState({trxRequestUri: this.baseRequestUri});
   }
 
-  onOpenLogin() {
+  onOpenSendTransaction() {
     this.interval = setInterval(() => {
-      //this.checkResponse();
+      this.checkResponse();
     }, 2000);
   }
 
-  onCloseLogin() {
+  onCloseSendTransaction() {
     clearInterval(this.interval);
+  }
+
+  checkResponse() {
+    // TxID check
   }
 
   render() {
     return (
       <div>
-        <div>
         {this.state.trxRequestUri != undefined && this.state.trxRequestUri != '' &&
         <Popup trigger={<Button>SendTransaction</Button>}
           on='click'
-          onOpen={() => this.onOpenLogin()}
-          onClose={() => this.onCloseLogin()}
+          onOpen={() => this.onOpenSendTransaction()}
+          onClose={() => this.onCloseSendTransaction()}
           verticalOffset={20}
           position='bottom right'
           style={{padding: '2em'}}>
             <QRCode value={this.state.trxRequestUri} size='128'/>
-        </Popup>
-        }
-        </div>
+        </Popup>}
       </div>
     )
   }
