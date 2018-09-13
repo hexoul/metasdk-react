@@ -14,6 +14,8 @@ export default class SendTransaction extends Component {
     value: PropTypes.string,
     data: PropTypes.string,
     usage: PropTypes.string,
+    service: PropTypes.string,
+    callback: PropTypes.func,
   }
 
   constructor() {
@@ -27,7 +29,6 @@ export default class SendTransaction extends Component {
   componentDidMount() {
     // URI for transaction
     this.baseRequestUri = "meta://transaction?to=";
-
     // URI for request
     if(this.props.request != undefined && this.props.request != '') {
       this.baseRequestUri += this.props.request.params[0].to + "&value=" + this.props.request.params[0].value + "&data=" + this.props.request.params[0].data;
@@ -36,13 +37,12 @@ export default class SendTransaction extends Component {
     else if(this.props.to != undefined && this.props.to != '') {
       this.baseRequestUri += this.props.to + "&value=" + this.props.value + "&data=" + this.props.data;
     }
-
-     // URI for usage
-     this.baseRequestUri += "&usage=" + this.props.usage;
-     // URI for service
-     this.baseRequestUri += "&service=" + this.props.service;
-     // URI for callback
-     this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
+    // URI for usage
+    this.baseRequestUri += "&usage=" + this.props.usage;
+    // URI for service
+    this.baseRequestUri += "&service=" + this.props.service;
+    // URI for callback
+    this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
     
     this.setState({trxRequestUri: this.baseRequestUri});
   }
