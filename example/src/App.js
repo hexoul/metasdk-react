@@ -53,6 +53,7 @@ export default class App extends Component {
 
         <SendTransaction 
           request={this.trxRequest}
+          usage='method'
           service='example'
           callback={this.callbackExample}
         />
@@ -62,6 +63,7 @@ export default class App extends Component {
           to='0x8101487270f5411cf213b8d348a2ab46df66245d'
           value='value2'
           data='data2'
+          usage='method'
           service='example'
           callback={this.callbackExample}
          />

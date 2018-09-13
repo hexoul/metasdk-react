@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popup } from 'semantic-ui-react';
 
+import MakeSessionID from '../util';
+
 var QRCode = require('qrcode.react');
 
 export default class SendTransaction extends Component {
@@ -11,24 +13,37 @@ export default class SendTransaction extends Component {
     to: PropTypes.string,
     value: PropTypes.string,
     data: PropTypes.string,
+    usage: PropTypes.string,
   }
 
   constructor() {
     super();
     this.state = {
+      session: MakeSessionID(),
       trxRequestUri: '',
     }
   }
 
   componentDidMount() {
+    // URI for transaction
     this.baseRequestUri = "meta://transaction?to=";
-    if(this.props.request != undefined) {
+
+    // URI for request
+    if(this.props.request != undefined && this.props.request != '') {
       this.baseRequestUri += this.props.request.params[0].to + "&value=" + this.props.request.params[0].value + "&data=" + this.props.request.params[0].data;
     }
+    // URI for to, value and data
     else if(this.props.to != undefined && this.props.to != '') {
       this.baseRequestUri += this.props.to + "&value=" + this.props.value + "&data=" + this.props.data;
     }
 
+     // URI for usage
+     this.baseRequestUri += "&usage=" + this.props.usage;
+     // URI for service
+     this.baseRequestUri += "&service=" + this.props.service;
+     // URI for callback
+     this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
+    
     this.setState({trxRequestUri: this.baseRequestUri});
   }
 
