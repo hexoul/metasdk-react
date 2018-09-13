@@ -25,20 +25,26 @@ export default class SendTransaction extends Component {
   }
 
   componentDidMount() {
-    this.baseTrxRequestUri = "meta://transaction?to=";
+    // URI for transaction
+    this.baseRequestUri = "meta://transaction?to=";
+
+    // URI for request
     if(this.props.request != undefined && this.props.request != '') {
-      console.log('this.props.request', this.props.request);
-      this.baseTrxRequestUri += this.props.request.params[0].to + "&value=" + this.props.request.params[0].value + "&data=" + this.props.request.params[0].data;
+      this.baseRequestUri += this.props.request.params[0].to + "&value=" + this.props.request.params[0].value + "&data=" + this.props.request.params[0].data;
     }
+    // URI for to, value and data
     else if(this.props.to != undefined && this.props.to != '') {
-      this.baseTrxRequestUri += this.props.to + "&value=" + this.props.value + "&data=" + this.props.data;
+      this.baseRequestUri += this.props.to + "&value=" + this.props.value + "&data=" + this.props.data;
     }
 
-    this.baseTrxRequestUri += ("&usage=" + this.props.usage + "&service=" + this.props.service
-    + "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session);
+     // URI for usage
+     this.baseRequestUri += "&usage=" + this.props.usage;
+     // URI for service
+     this.baseRequestUri += "&service=" + this.props.service;
+     // URI for callback
+     this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
     
-    console.log('baseTrxRequestUri: ',this.baseTrxRequestUri);
-    this.setState({trxRequestUri: this.baseTrxRequestUri});
+    this.setState({trxRequestUri: this.baseRequestUri});
   }
 
   onOpenSendTransaction() {
