@@ -35,7 +35,7 @@ export default class Request extends Component {
   }
 
   componentWillMount() {
-    util.SetQrStyle(this.qrstyle, this.props);
+    util.SetQRstyle(this.qrstyle, this.props, 'Request');
   }
 
   componentDidMount() {

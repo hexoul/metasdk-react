@@ -30,8 +30,7 @@ export default class Login extends Component {
   }
 
   componentWillMount() {
-    // Intialize QRCode style
-    util.SetQrStyle(this.qrstyle, this.props);
+    util.SetQRstyle(this.qrstyle, this.props, 'Login');
   }
 
   componentDidMount() {

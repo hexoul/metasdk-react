@@ -33,8 +33,7 @@ export default class SendTransaction extends Component {
   }
 
   componentWillMount() {
-    // Intialize QRCode style
-    util.SetQrStyle(this.qrstyle, this.props);
+    util.SetQRstyle(this.qrstyle, this.props, 'SendTransaction');
   }
 
   componentDidMount() {
