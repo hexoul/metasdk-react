@@ -55,16 +55,31 @@ export default class SendTransaction extends Component {
     this.baseRequestUri += "&service=" + this.props.service;
     // URI for callback
     this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
-    
-    //styles for QRcode
-    this.qrstyle['qrsize'] = this.props.qrsize;
-    this.qrstyle['qrvoffset'] = this.props.qrvoffset;
-    this.qrstyle['qrpadding'] = this.props.qrpadding;
-    this.qrstyle['qrposition'] = this.props.qrposition;
-    this.qrstyle['qrtext'] = this.props.qrtext;
 
-    console.log(this.qrstyle);
     this.setState({trxRequestUri: this.baseRequestUri});
+  }
+
+  componentWillMount() {
+    //Set styles for QRcode
+    if(this.props.qrsize >= 128 && this.props.qrsize <= 256){
+      this.qrstyle['qrsize'] = this.props.qrsize;
+    }
+
+    if(this.props.qrvoffset >= 0){
+      this.qrstyle['qrvoffset'] = this.props.qrvoffset;
+    }
+
+    this.qrstyle['qrpadding'] = this.props.qrpadding;
+
+    if(this.props.qrposition == 'top left' || this.props.qrposition == 'top right' || this.props.qrposition == 'bottom left' ||
+       this.props.qrposition == 'bottom right' || this.props.qrposition == 'right center' || this.props.qrposition == 'left center' ||
+       this.props.qrposition == 'top center' || this.props.qrposition == 'bottom center' ) {
+        this.qrstyle['qrposition'] = this.props.qrposition;
+    }
+
+    if(this.props.qrtext != '' && this.props.qrtext != null){
+      this.qrstyle['qrtext'] = this.props.qrtext;
+    }
   }
 
   onOpenSendTransaction() {
@@ -94,7 +109,7 @@ export default class SendTransaction extends Component {
             onClose={() => this.onCloseSendTransaction()}
             verticalOffset={this.qrstyle['qrvoffset']}
             position={this.qrstyle['qrposition']}
-            style={{padding: this.qrstyle['qrpadding']}}>
+            style={{padding: this.qrstyle['qrpadding'], backgroundColor: 'white'}}>
               <QRCode value={this.state.trxRequestUri} size={this.qrstyle['qrsize']} />
           </Popup>
         }
