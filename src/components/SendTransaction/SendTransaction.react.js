@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popup } from 'semantic-ui-react';
 
-import MakeSessionID from '../util';
-import { POSITIONS } from '../util';
+import MakeSessionID, { POSITIONS } from '../util';
 
 var QRCode = require('qrcode.react');
 
@@ -29,14 +28,17 @@ export default class SendTransaction extends Component {
     this.state = {
       session: MakeSessionID(),
       trxRequestUri: '',
-    }
-    this.qrstyle = {
-      qrsize: 128,
-      qrvoffset: 20,
-      qrpadding: '2em',
-      qrposition: 'bottom right',
-      qrtext: 'SendTransaction',
-    }
+    };
+    this.qrstyle = {};
+  }
+
+  componentWillMount() {
+    // Intialize QRCode style
+    this.qrstyle['qrsize'] = this.props.qrsize > 0 ?  this.props.qrsize : 128;
+    this.qrstyle['qrvoffset'] = this.props.qrvoffset >= 0 ? this.props.qrvoffset : 20;
+    this.qrstyle['qrpadding'] = this.props.qrpadding ? this.props.qrpadding : '1em';
+    this.qrstyle['qrposition'] = POSITIONS.includes(this.props.qrposition) ? this.props.qrposition : 'bottom right';
+    this.qrstyle['qrtext'] = this.props.qrtext ? this.props.qrtext : 'SendTransaction';
   }
 
   componentDidMount() {
@@ -58,15 +60,6 @@ export default class SendTransaction extends Component {
     this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
 
     this.setState({trxRequestUri: this.baseRequestUri});
-  }
-
-  componentWillMount() {
-    //Set styles for QRcode
-    this.qrstyle['qrsize'] = this.props.qrsize > 0 ?  this.props.qrsize : 128;
-    this.qrstyle['qrvoffset'] = this.props.qrvoffset >= 0 ? this.props.qrvoffset : 20;
-    this.qrstyle['qrpadding'] = this.props.qrpadding;
-    this.qrstyle['qrposition'] = POSITIONS.includes(this.props.qrposition) ? this.props.qrposition : 'bottom right';
-    this.qrstyle['qrtext'] = this.props.qrtext != undefined ? this.props.qrtext : 'SendTransaction';
   }
 
   onOpenSendTransaction() {
@@ -96,7 +89,9 @@ export default class SendTransaction extends Component {
             onClose={() => this.onCloseSendTransaction()}
             verticalOffset={this.qrstyle['qrvoffset']}
             position={this.qrstyle['qrposition']}
-            style={{padding: this.qrstyle['qrpadding'], backgroundColor: 'white'}}>
+            style={{
+              padding: this.qrstyle['qrpadding'],
+              backgroundColor: 'white'}}>
               <QRCode value={this.state.trxRequestUri} size={this.qrstyle['qrsize']} />
           </Popup>
         }
