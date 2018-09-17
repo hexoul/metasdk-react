@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popup } from 'semantic-ui-react';
 
-import MakeSessionID from '../util';
+import MakeSessionID, { POSITIONS } from '../util';
 import styles from './styles.css';
 
 const NodeRSA = require('node-rsa');
@@ -17,6 +17,11 @@ export default class Request extends Component {
     request: PropTypes.array,
     service: PropTypes.string,
     callback: PropTypes.func,
+    qrsize: PropTypes.number,
+    qrvoffset: PropTypes.number,
+    qrpadding: PropTypes.string,
+    qrposition: PropTypes.string,
+    qrtext: PropTypes.string,
   }
 
   constructor() {
@@ -26,6 +31,16 @@ export default class Request extends Component {
       session: MakeSessionID(),
       requestUri: '',
     };
+    this.qrstyle = {};
+  }
+
+  componentWillMount() {
+    // Intialize QRCode style
+    this.qrstyle['qrsize'] = this.props.qrsize > 0 ?  this.props.qrsize : 128;
+    this.qrstyle['qrvoffset'] = this.props.qrvoffset >= 0 ? this.props.qrvoffset : 20;
+    this.qrstyle['qrpadding'] = this.props.qrpadding ? this.props.qrpadding : '1em';
+    this.qrstyle['qrposition'] = POSITIONS.includes(this.props.qrposition) ? this.props.qrposition : 'bottom right';
+    this.qrstyle['qrtext'] = this.props.qrtext ? this.props.qrtext : 'Request';
   }
 
   componentDidMount() {
@@ -97,15 +112,17 @@ export default class Request extends Component {
         {this.state.requestUri != undefined && this.state.requestUri != '' &&
           <Popup
             trigger={
-              <Button>Request</Button>
+              <Button>{this.qrstyle['qrtext']}</Button>
             }
             on='click'
             onOpen={() => this.onOpenRequest()}
             onClose={() => this.onCloseRequest()}
-            verticalOffset={20}
-            position='bottom right'
-            style={{padding: '2em'}}>
-              <QRCode value={this.state.requestUri} size={128} />
+            verticalOffset={this.qrstyle['qrvoffset']}
+            position={this.qrstyle['qrposition']}
+            style={{
+              padding: this.qrstyle['qrpadding'],
+              backgroundColor: 'white'}}>
+              <QRCode value={this.state.requestUri} size={this.qrstyle['qrsize']} />
           </Popup>
         }
       </div>
