@@ -57,7 +57,7 @@ export default class App extends Component {
           service='example'
           qrsize={128}
           qrvoffset={20}
-          qrpadding='4em'
+          qrpadding='2em'
           qrposition='bottom right'
           qrtext='SendTransaction'
           callback={this.callbackExample}

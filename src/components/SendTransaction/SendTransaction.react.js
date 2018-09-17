@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Popup } from 'semantic-ui-react';
 
 import MakeSessionID from '../util';
+import { POSITIONS } from '../util';
 
 var QRCode = require('qrcode.react');
 
@@ -61,25 +62,11 @@ export default class SendTransaction extends Component {
 
   componentWillMount() {
     //Set styles for QRcode
-    if(this.props.qrsize >= 128 && this.props.qrsize <= 256){
-      this.qrstyle['qrsize'] = this.props.qrsize;
-    }
-
-    if(this.props.qrvoffset >= 0){
-      this.qrstyle['qrvoffset'] = this.props.qrvoffset;
-    }
-
+    this.qrstyle['qrsize'] = this.props.qrsize > 0 ?  this.props.qrsize : 128;
+    this.qrstyle['qrvoffset'] = this.props.qrvoffset >= 0 ? this.props.qrvoffset : 20;
     this.qrstyle['qrpadding'] = this.props.qrpadding;
-
-    if(this.props.qrposition == 'top left' || this.props.qrposition == 'top right' || this.props.qrposition == 'bottom left' ||
-       this.props.qrposition == 'bottom right' || this.props.qrposition == 'right center' || this.props.qrposition == 'left center' ||
-       this.props.qrposition == 'top center' || this.props.qrposition == 'bottom center' ) {
-        this.qrstyle['qrposition'] = this.props.qrposition;
-    }
-
-    if(this.props.qrtext != '' && this.props.qrtext != null){
-      this.qrstyle['qrtext'] = this.props.qrtext;
-    }
+    this.qrstyle['qrposition'] = POSITIONS.includes(this.props.qrposition) ? this.props.qrposition : 'bottom right';
+    this.qrstyle['qrtext'] = this.props.qrtext != undefined ? this.props.qrtext : 'SendTransaction';
   }
 
   onOpenSendTransaction() {
