@@ -55,6 +55,11 @@ export default class App extends Component {
           request={this.trxRequest}
           usage='method'
           service='example'
+          qrsize={128}
+          qrvoffset={20}
+          qrpadding='2em'
+          qrposition='bottom right'
+          qrtext='SendTransaction'
           callback={this.callbackExample}
         />
         <hr />
@@ -65,6 +70,11 @@ export default class App extends Component {
           data='data2'
           usage='method'
           service='example'
+          qrsize={256}
+          qrvoffset={20}
+          qrpadding='3em'
+          qrposition='bottom right'
+          qrtext='SendTransaction'
           callback={this.callbackExample}
          />
       </div>
