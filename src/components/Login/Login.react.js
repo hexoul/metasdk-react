@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popup } from 'semantic-ui-react';
 
-import MakeSessionID, { POSITIONS } from '../util';
+import * as util from '../util';
 
 var QRCode = require('qrcode.react');
 var https = require('https');
@@ -23,7 +23,7 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = {
-      session: MakeSessionID(),
+      session: util.MakeSessionID(),
       requestUri: '',
     };
     this.qrstyle = {};
@@ -31,11 +31,7 @@ export default class Login extends Component {
 
   componentWillMount() {
     // Intialize QRCode style
-    this.qrstyle['qrsize'] = this.props.qrsize > 0 ?  this.props.qrsize : 128;
-    this.qrstyle['qrvoffset'] = this.props.qrvoffset >= 0 ? this.props.qrvoffset : 20;
-    this.qrstyle['qrpadding'] = this.props.qrpadding ? this.props.qrpadding : '1em';
-    this.qrstyle['qrposition'] = POSITIONS.includes(this.props.qrposition) ? this.props.qrposition : 'bottom right';
-    this.qrstyle['qrtext'] = this.props.qrtext ? this.props.qrtext : 'Login';
+    util.SetQrStyle(this.qrstyle, this.props);
   }
 
   componentDidMount() {
