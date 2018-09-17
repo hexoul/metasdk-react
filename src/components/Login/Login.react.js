@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popup } from 'semantic-ui-react';
 
-import MakeSessionID from '../util';
+import * as util from '../util';
 
 var QRCode = require('qrcode.react');
 var https = require('https');
@@ -18,7 +18,7 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = {
-      session: MakeSessionID(),
+      session: util.MakeSessionID(),
       requestUri: '',
     };
   }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Popup } from 'semantic-ui-react';
 
-import MakeSessionID from '../util';
+import * as util from '../util';
 import styles from './styles.css';
 
 const NodeRSA = require('node-rsa');
@@ -23,7 +23,7 @@ export default class Request extends Component {
     super();
     this.reqinfo = {};
     this.state = {
-      session: MakeSessionID(),
+      session: util.MakeSessionID(),
       requestUri: '',
     };
   }
