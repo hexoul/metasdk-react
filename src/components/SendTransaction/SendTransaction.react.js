@@ -16,6 +16,11 @@ export default class SendTransaction extends Component {
     usage: PropTypes.string,
     service: PropTypes.string,
     callback: PropTypes.func,
+    qrsize: PropTypes.number,
+    qrvoffset: PropTypes.number,
+    qrpadding: PropTypes.string,
+    qrposition: PropTypes.string,
+    qrtext: PropTypes.string,
   }
 
   constructor() {
@@ -23,6 +28,13 @@ export default class SendTransaction extends Component {
     this.state = {
       session: MakeSessionID(),
       trxRequestUri: '',
+    }
+    this.qrstyle = {
+      qrsize: 128,
+      qrvoffset: 20,
+      qrpadding: '2em',
+      qrposition: 'bottom right',
+      qrtext: 'SendTransaction',
     }
   }
 
@@ -44,6 +56,14 @@ export default class SendTransaction extends Component {
     // URI for callback
     this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
     
+    //styles for QRcode
+    this.qrstyle['qrsize'] = this.props.qrsize;
+    this.qrstyle['qrvoffset'] = this.props.qrvoffset;
+    this.qrstyle['qrpadding'] = this.props.qrpadding;
+    this.qrstyle['qrposition'] = this.props.qrposition;
+    this.qrstyle['qrtext'] = this.props.qrtext;
+
+    console.log(this.qrstyle);
     this.setState({trxRequestUri: this.baseRequestUri});
   }
 
@@ -67,15 +87,15 @@ export default class SendTransaction extends Component {
         {this.state.trxRequestUri != undefined && this.state.trxRequestUri != '' &&
           <Popup
             trigger={
-              <Button>SendTransaction</Button>
+              <Button>{this.qrstyle['qrtext']}</Button>
             }
             on='click'
             onOpen={() => this.onOpenSendTransaction()}
             onClose={() => this.onCloseSendTransaction()}
-            verticalOffset={20}
-            position='bottom right'
-            style={{padding: '2em'}}>
-              <QRCode value={this.state.trxRequestUri} size={128} />
+            verticalOffset={this.qrstyle['qrvoffset']}
+            position={this.qrstyle['qrposition']}
+            style={{padding: this.qrstyle['qrpadding']}}>
+              <QRCode value={this.state.trxRequestUri} size={this.qrstyle['qrsize']} />
           </Popup>
         }
       </div>
