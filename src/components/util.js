@@ -1,12 +1,12 @@
 export const POSITIONS = [
   'top left',
-  'top right',
-  'bottom right',
-  'bottom left',
-  'right center',
-  'left center',
   'top center',
+  'top right',
+  'bottom left',
   'bottom center',
+  'bottom right',
+  'left center',
+  'right center',
 ]
 
 function MakeSessionID() {
