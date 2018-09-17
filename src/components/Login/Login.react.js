@@ -13,6 +13,11 @@ export default class Login extends Component {
     data: PropTypes.string,
     service: PropTypes.string,
     callback: PropTypes.func,
+    qrsize: PropTypes.number,
+    qrvoffset: PropTypes.number,
+    qrpadding: PropTypes.string,
+    qrposition: PropTypes.string,
+    qrtext: PropTypes.string,
   }
 
   constructor() {
@@ -21,6 +26,12 @@ export default class Login extends Component {
       session: util.MakeSessionID(),
       requestUri: '',
     };
+    this.qrstyle = {};
+  }
+
+  componentWillMount() {
+    // Intialize QRCode style
+    util.SetQrStyle(this.qrstyle, this.props);
   }
 
   componentDidMount() {
@@ -73,15 +84,17 @@ export default class Login extends Component {
         {this.state.requestUri != undefined && this.state.requestUri != '' &&
           <Popup
             trigger={
-              <Button>Login</Button>
+              <Button>{this.qrstyle['qrtext']}</Button>
             }
             on='click'
             onOpen={() => this.onOpenLogin()}
             onClose={() => this.onCloseLogin()}
-            verticalOffset={20}
-            position='bottom right'
-            style={{padding: '2em'}}>
-              <QRCode value={this.state.requestUri} size={128} />
+            verticalOffset={this.qrstyle['qrvoffset']}
+            position={this.qrstyle['qrposition']}
+            style={{
+              padding: this.qrstyle['qrpadding'],
+              backgroundColor: 'white'}}>
+              <QRCode value={this.state.requestUri} size={this.qrstyle['qrsize']} />
           </Popup>
         }
       </div>
