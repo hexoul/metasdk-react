@@ -65,15 +65,16 @@ export default class SendTransaction extends Component {
     return (
       <div>
         {this.state.trxRequestUri != undefined && this.state.trxRequestUri != '' &&
-        <Popup trigger={<Button>SendTransaction</Button>}
-          on='click'
-          onOpen={() => this.onOpenSendTransaction()}
-          onClose={() => this.onCloseSendTransaction()}
-          verticalOffset={20}
-          position='bottom right'
-          style={{padding: '2em'}}>
-            <QRCode value={this.state.trxRequestUri} size='128'/>
-        </Popup>}
+          <Popup trigger={<Button>SendTransaction</Button>}
+            on='click'
+            onOpen={() => this.onOpenSendTransaction()}
+            onClose={() => this.onCloseSendTransaction()}
+            verticalOffset={20}
+            position='bottom right'
+            style={{padding: '2em'}}>
+              <QRCode value={this.state.trxRequestUri} size='128'/>
+          </Popup>
+        }
       </div>
     )
   }

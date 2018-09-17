@@ -71,15 +71,16 @@ export default class Login extends Component {
     return (
       <div>
         {this.state.requestUri != undefined && this.state.requestUri != '' &&
-        <Popup trigger={<Button>Login</Button>}
-          on='click'
-          onOpen={() => this.onOpenLogin()}
-          onClose={() => this.onCloseLogin()}
-          verticalOffset={20}
-          position='bottom right'
-          style={{padding: '2em'}}>
-            <QRCode value={this.state.requestUri} size='128'/>
-        </Popup>}
+          <Popup trigger={<Button>Login</Button>}
+            on='click'
+            onOpen={() => this.onOpenLogin()}
+            onClose={() => this.onCloseLogin()}
+            verticalOffset={20}
+            position='bottom right'
+            style={{padding: '2em'}}>
+              <QRCode value={this.state.requestUri} size='128'/>
+          </Popup>
+        }
       </div>
     )
   }

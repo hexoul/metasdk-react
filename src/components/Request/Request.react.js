@@ -96,15 +96,16 @@ export default class Request extends Component {
     return (
       <div>
         {this.state.requestUri != undefined && this.state.requestUri != '' &&
-        <Popup trigger={<Button>Request</Button>}
-          on='click'
-          onOpen={() => this.onOpenRequest()}
-          onClose={() => this.onCloseRequest()}
-          verticalOffset={20}
-          position='bottom right'
-          style={{padding: '2em'}}>
-            <QRCode value={this.state.requestUri} size='128'/>
-        </Popup>}
+          <Popup trigger={<Button>Request</Button>}
+            on='click'
+            onOpen={() => this.onOpenRequest()}
+            onClose={() => this.onCloseRequest()}
+            verticalOffset={20}
+            position='bottom right'
+            style={{padding: '2em'}}>
+              <QRCode value={this.state.requestUri} size='128'/>
+          </Popup>
+        }
       </div>
     )
   }
