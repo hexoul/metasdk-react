@@ -63,11 +63,11 @@ class Example extends Component {
 ```
 
 QRCode styles can be set for all components like above example `SendTransaction`.
-`qrsize` changes the size of QRCode.
-`qrvoffset` is a vertical offset from origin.
-`qrpadding` applies padding thickness of QRCode as style.
-`qrposition` decides relative position from origin, declaration for positions are in `util.js`.
-`qrtext` sets `Button` text to open QRCode popup.
+- `qrsize` changes the size of QRCode.
+- `qrvoffset` is a vertical offset from origin.
+- `qrpadding` applies padding thickness of QRCode as style.
+- `qrposition` decides relative position from origin, declaration for positions are in `util.js`.
+- `qrtext` sets `Button` text to open QRCode popup.
 
 ## Test
 ```
