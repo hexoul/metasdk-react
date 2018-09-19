@@ -23,6 +23,9 @@ export function SetQRstyle(dst, src, caller) {
   dst['qrtext'] = src.qrtext ? src.qrtext : caller;
 }
 
+/**
+ * Make session ID randomly, the length can be changed.
+ */
 export function MakeSessionID() {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -31,15 +34,30 @@ export function MakeSessionID() {
     return text;
 }
 
+function isHexString(arg) {
+  if (arg != undefined && typeof arg === 'string' && arg.length > 2 && arg.substring(0,2) != '0x') {
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Convert to hexadecimal for value property of SendTransaction
+ * @param {*} value 
+ */
 export function ConvertVal2Hexd(value) {
-  if (value != undefined && value.length > 2 && value.substring(0,2) != '0x') {
+  if (! isHexString(value)) {
     return '0x' + parseInt(value,10).toString(16);
   } 
   return value;
 }
 
+/**
+ * Convert to hexadecimal for data property of SendTransaction
+ * @param {*} data 
+ */
 export function ConvertData2Hexd(data) {
-  if (data != undefined && data.length > 2 && data.substring(0,2) != '0x') {
+  if (! isHexString(data)) {
     var hex = '';
 	  for (var i=0; i < data.length; i++) {
 		  hex += data.charCodeAt(i).toString(16);

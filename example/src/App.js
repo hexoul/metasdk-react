@@ -14,10 +14,9 @@ export default class App extends Component {
   componentWillMount() {
     if(typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
       this.web3 = new Web3(window.web3.currentProvider);
-      let BNB = new this.web3.eth.Contract(compiledBNB,'0x763529b9ECE8694442FC7CAA2bEb305D6452B56d');
-
-      this.trxRequest = BNB.methods.transfer('0xd396ce692b3c735d9ebd4ed0407c9df17efcee91', this.web3.utils.toWei('0', 'ether')).send.request({from: "", value: this.web3.utils.toWei('0', 'ether'), gasPrice: '1'});
-      console.log('trxRequest', this.trxRequest);
+      let BNB = new this.web3.eth.Contract(compiledBNB, '0x763529b9ECE8694442FC7CAA2bEb305D6452B56d');
+      this.trxRequest = BNB.methods.transfer('0xd396ce692b3c735d9ebd4ed0407c9df17efcee91', this.web3.utils.toWei('0', 'ether'))
+                                      .send.request({from: "", value: this.web3.utils.toWei('0', 'ether'), gasPrice: '1'});
     }
   }
 
