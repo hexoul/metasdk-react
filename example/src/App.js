@@ -34,6 +34,14 @@ export default class App extends Component {
     });
   }
 
+  sendTrxCallbackExample(arg) {
+    console.log('sendTrxCallbackExample', arg);
+    this.request.map((req) => {
+      console.log('got', req, arg[req]);
+      return req;
+    });
+  }
+
   render () {
     return (
       <div>
@@ -55,7 +63,7 @@ export default class App extends Component {
           request={this.trxRequest}
           usage='method'
           service='example'
-          callback={this.callbackExample}
+          callback={this.sendTrxCallbackExample}
         />
         <hr />
 
@@ -70,7 +78,7 @@ export default class App extends Component {
           qrpadding='2em'
           qrposition='bottom right'
           qrtext='SendTransaction'
-          callback={this.callbackExample}
+          callback={this.sendTrxCallbackExample}
         />
       </div>
     )

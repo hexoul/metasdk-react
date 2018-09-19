@@ -5,6 +5,7 @@ import { Button, Popup } from 'semantic-ui-react';
 import * as util from '../util';
 
 var QRCode = require('qrcode.react');
+var https = require('https');
 
 export default class SendTransaction extends Component {
   
@@ -34,6 +35,7 @@ export default class SendTransaction extends Component {
 
   componentWillMount() {
     util.SetQRstyle(this.qrstyle, this.props, 'SendTransaction');
+    console.log('sessin id: ',this.state.session);
   }
 
   componentDidMount() {
@@ -69,6 +71,23 @@ export default class SendTransaction extends Component {
 
   checkResponse() {
     // TxID check
+    https.request({
+      host: '2g5198x91e.execute-api.ap-northeast-2.amazonaws.com',
+      path: '/test?key=' + this.state.session,
+    }, (res) => {
+      res.on('end', () => {
+        if (data !== '') {
+          clearInterval(this.interval);
+          var json = JSON.parse(data);
+          this.props.callback({
+            txid: json['txid'],
+            address: json['address'],
+          });
+        }
+      });
+    }).on('error', (err) => {
+      console.log('error', err);
+    }).end();
   }
 
   render() {
