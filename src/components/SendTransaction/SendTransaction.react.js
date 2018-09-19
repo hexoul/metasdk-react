@@ -47,7 +47,7 @@ export default class SendTransaction extends Component {
     }
     // URI for to, value and data
     else if(this.props.to != undefined && this.props.to != '') {
-      this.baseRequestUri += this.props.to + "&value=" + this.props.value + "&data=" + this.props.data;
+      this.baseRequestUri += this.props.to + "&value=" + util.ConvertVal2Hexd(this.props.value) + "&data=" + util.ConvertData2Hexd(this.props.data);
     }
     // URI for usage
     this.baseRequestUri += "&usage=" + this.props.usage;
@@ -55,7 +55,7 @@ export default class SendTransaction extends Component {
     this.baseRequestUri += "&service=" + this.props.service;
     // URI for callback
     this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
-
+    
     this.setState({trxRequestUri: this.baseRequestUri});
   }
 

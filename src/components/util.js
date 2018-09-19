@@ -30,3 +30,26 @@ export function MakeSessionID() {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
 }
+
+export function ConvertVal2Hexd(value) {
+  if(value.substring(0,2) != '0x') {
+    var hex = parseInt(value,10).toString(16);
+    return '0x'+hex;
+  } 
+  else {
+    return value;
+  }
+}
+
+export function ConvertData2Hexd(data) {
+  if(data.substring(0,2) != '0x') {
+    var hex = '';
+	  for(var i=0;i<data.length;i++) {
+		  hex += ''+data.charCodeAt(i).toString(16);
+    }
+    return '0x'+hex;
+  }
+  else {
+    return data;
+  }
+}
