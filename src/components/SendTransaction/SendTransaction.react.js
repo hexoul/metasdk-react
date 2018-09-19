@@ -24,13 +24,14 @@ export default class SendTransaction extends Component {
     qrtext: PropTypes.string,
   }
 
+  qrstyle = {};
+
   constructor() {
     super();
     this.state = {
       session: util.MakeSessionID(),
       trxRequestUri: '',
     };
-    this.qrstyle = {};
   }
 
   componentWillMount() {
