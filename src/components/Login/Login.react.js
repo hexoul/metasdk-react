@@ -18,7 +18,9 @@ export default class Login extends Component {
     qrpadding: PropTypes.string,
     qrposition: PropTypes.string,
     qrtext: PropTypes.string,
-  }
+  };
+
+  qrstyle = {};
 
   constructor() {
     super();
@@ -26,7 +28,6 @@ export default class Login extends Component {
       session: util.MakeSessionID(),
       requestUri: '',
     };
-    this.qrstyle = {};
   }
 
   componentWillMount() {
@@ -65,11 +66,13 @@ export default class Login extends Component {
         if (data !== '') {
           clearInterval(this.interval);
           var json = JSON.parse(data);
-          this.props.callback({
-            data: json['data'],
-            signature: json['signature'],
-            metaId: json['meta_id'],
-          });
+          if (this.props.callback) {
+            this.props.callback({
+              data: json['data'],
+              signature: json['signature'],
+              metaId: json['meta_id'],
+            });
+          }
         }
       });
     }).on('error', (err) => {

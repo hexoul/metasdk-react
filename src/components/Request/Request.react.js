@@ -24,6 +24,8 @@ export default class Request extends Component {
     qrtext: PropTypes.string,
   }
 
+  qrstyle = {};
+
   constructor() {
     super();
     this.reqinfo = {};
@@ -31,7 +33,6 @@ export default class Request extends Component {
       session: util.MakeSessionID(),
       requestUri: '',
     };
-    this.qrstyle = {};
   }
 
   componentWillMount() {
@@ -93,7 +94,9 @@ export default class Request extends Component {
             data += nDecipher.final('utf-8');
             this.reqinfo[req] = data;
           });
-          this.props.callback(this.reqinfo);
+          if (this.props.callback) {
+            this.props.callback(this.reqinfo);
+          }
         }
       });
     }).on('error', (err) => {
