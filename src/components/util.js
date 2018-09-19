@@ -41,10 +41,10 @@ export function ConvertVal2Hexd(value) {
 export function ConvertData2Hexd(data) {
   if (data != undefined && data.length > 2 && data.substring(0,2) != '0x') {
     var hex = '';
-	  for (var i=0; i<data.length; i++) {
-		  hex += ''+data.charCodeAt(i).toString(16);
+	  for (var i=0; i < data.length; i++) {
+		  hex += data.charCodeAt(i).toString(16);
     }
-    return '0x'+hex;
+    return '0x' + hex;
   }
   return data;
 }
