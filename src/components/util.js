@@ -32,24 +32,19 @@ export function MakeSessionID() {
 }
 
 export function ConvertVal2Hexd(value) {
-  if(value.substring(0,2) != '0x') {
-    var hex = parseInt(value,10).toString(16);
-    return '0x'+hex;
+  if (value != undefined && value.length > 2 && value.substring(0,2) != '0x') {
+    return '0x' + parseInt(value,10).toString(16);
   } 
-  else {
-    return value;
-  }
+  return value;
 }
 
 export function ConvertData2Hexd(data) {
-  if(data.substring(0,2) != '0x') {
+  if (data != undefined && data.length > 2 && data.substring(0,2) != '0x') {
     var hex = '';
-	  for(var i=0;i<data.length;i++) {
+	  for (var i=0; i<data.length; i++) {
 		  hex += ''+data.charCodeAt(i).toString(16);
     }
     return '0x'+hex;
   }
-  else {
-    return data;
-  }
+  return data;
 }
