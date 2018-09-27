@@ -36,6 +36,7 @@ export default class App extends Component {
     return (
       <div>
         <Login
+          id ='loginID'
           data='testmsg'
           service='example'
           callback={this.callbackExample}
@@ -43,13 +44,15 @@ export default class App extends Component {
         <hr />
 
         <Request
+          id='requestID'
           request={this.request}
           service='example'
           callback={this.requestCallbackExample}
         />
         <hr />
 
-        <SendTransaction 
+        <SendTransaction
+          id='sendTransactionId1'
           request={this.trxRequest}
           usage='method'
           service='example'
@@ -58,6 +61,7 @@ export default class App extends Component {
         <hr />
 
         <SendTransaction
+          id='sendTransactionId2'
           to='0x8101487270f5411cf213b8d348a2ab46df66245d'
           value={this.web3.utils.toWei('0.01', 'ether')}
           data='data2'
