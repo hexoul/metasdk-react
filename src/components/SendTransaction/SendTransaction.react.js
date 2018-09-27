@@ -102,7 +102,7 @@ export default class SendTransaction extends Component {
         {this.state.trxRequestUri != undefined && this.state.trxRequestUri != '' &&
           <Popup
             trigger={
-              <Button>{this.qrstyle['qrtext']}</Button>
+              <Button id = {this.props.id}> {this.qrstyle['qrtext']} </Button>
             }
             on='click'
             onOpen={() => this.onOpenSendTransaction()}
