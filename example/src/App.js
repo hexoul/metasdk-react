@@ -40,9 +40,8 @@ export default class App extends Component {
   render () {
     return (
       <div>
-        <button onClick={this.onClickTest}> onClickTest </button>
-        <hr />
-
+        <button onClick={this.onClickTest}>onClickTest</button>
+        
         <Login
           id ='loginID'
           data='testmsg'

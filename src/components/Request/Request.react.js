@@ -110,7 +110,9 @@ export default class Request extends Component {
         {this.state.requestUri != undefined && this.state.requestUri != '' &&
           <Popup
             trigger={
-              <Button id = {this.props.id}>{this.qrstyle['qrtext']}</Button>
+              <Button id={this.props.id}>
+                {this.qrstyle['qrtext']}
+              </Button>
             }
             on='click'
             onOpen={() => this.onOpenRequest()}
