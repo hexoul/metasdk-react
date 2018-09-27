@@ -32,9 +32,17 @@ export default class App extends Component {
     });
   }
 
+  onClickTest() {
+    var componentID = 'loginID';
+    document.getElementById(componentID).click();
+  }
+
   render () {
     return (
       <div>
+        <button onClick={this.onClickTest}> onClickTest </button>
+        <hr />
+
         <Login
           id ='loginID'
           data='testmsg'
