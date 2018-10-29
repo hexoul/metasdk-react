@@ -17,6 +17,7 @@ export default class SendTransaction extends Component {
     usage: PropTypes.string,
     service: PropTypes.string,
     callback: PropTypes.func,
+    callbackUrl: PropTypes.string,
     qrsize: PropTypes.number,
     qrvoffset: PropTypes.number,
     qrpadding: PropTypes.string,
@@ -60,12 +61,16 @@ export default class SendTransaction extends Component {
   }
 
   onOpenSendTransaction() {
+    if (this.props.callbackUrl) return;
+
     this.interval = setInterval(() => {
       this.checkResponse();
     }, 2000);
   }
 
   onCloseSendTransaction() {
+    if (this.props.callbackUrl) return;
+
     clearInterval(this.interval);
   }
 
@@ -99,7 +104,10 @@ export default class SendTransaction extends Component {
   render() {
     return (
       <div>
-        {this.state.trxRequestUri != undefined && this.state.trxRequestUri != '' &&
+        {this.props.callbackUrl &&
+          <QRCode value={this.state.trxRequestUri} size={this.qrstyle['qrsize']} />
+        }
+        {this.state.trxRequestUri && ! this.props.callbackUrl &&
           <Popup
             trigger={
               <Button id={this.props.id}>

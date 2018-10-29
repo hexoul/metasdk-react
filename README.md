@@ -35,16 +35,31 @@ class Example extends Component {
           service='example'
           callback={this.callbackExample}
         />
-        <hr />
 
         <Request
           request={['name', 'email']}
           service='example'
           callback={this.callbackExample}
         />
-        <hr />
 
         <SendTransaction
+          id='sendTransactionByRequest'
+          request={this.trxRequest}
+          usage='method'
+          service='example'
+          callback={this.callbackExample}
+        />
+
+        <SendTransaction
+          id='sendTransactionWithCallbackURL'
+          request={this.trxRequest}
+          usage='method'
+          service='example'
+          callbackUrl='http://localhost/callback'
+        />
+
+        <SendTransaction
+          id='sendTransactionByRaw'
           to='0x8101487270f5411cf213b8d348a2ab46df66245d'
           value='0x01'
           data='0x02'

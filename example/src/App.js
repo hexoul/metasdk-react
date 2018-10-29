@@ -68,6 +68,15 @@ export default class App extends Component {
         <hr />
 
         <SendTransaction
+          id='sendTransactionWithCallbackURL'
+          request={this.trxRequest}
+          usage='method'
+          service='example'
+          callbackUrl='http://localhost/callback'
+        />
+        <hr />
+
+        <SendTransaction
           id='sendTransactionId2'
           to='0x8101487270f5411cf213b8d348a2ab46df66245d'
           value={this.web3.utils.toWei('0.01', 'ether')}
