@@ -55,9 +55,10 @@ export default class SendTransaction extends Component {
     // URI for service
     this.baseRequestUri += "&service=" + this.props.service;
     // URI for callback
-    this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
+    if (this.props.callbackUrl) this.baseRequestUri += "&callback=" + encodeURIComponent(this.props.callbackUrl);
+    else this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
     
-    this.setState({trxRequestUri: this.baseRequestUri});
+    this.setState({ trxRequestUri: this.baseRequestUri });
   }
 
   onOpenSendTransaction() {
