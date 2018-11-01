@@ -18,6 +18,7 @@ export default class SendTransaction extends Component {
     usage: PropTypes.string,
     service: PropTypes.string,
     callback: PropTypes.func,
+    callbackUrl: PropTypes.string,
     qrsize: PropTypes.number,
     qrvoffset: PropTypes.number,
     qrpadding: PropTypes.string,
@@ -55,28 +56,23 @@ export default class SendTransaction extends Component {
     // URI for service
     this.baseRequestUri += "&service=" + this.props.service;
     // URI for callback
-    this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
-
-    // // Pure QR value
-    // this.setState({trxRequestUri: this.baseRequestUri});
-    // console.log('Pure length: ',this.baseRequestUri.length);
-
-    // IPFS QR value
-    ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
-    var ipfsURI = 'https://ipfs.infura.io:5001/api/v0/cat?arg='+ipfsHash[0].hash;
-
-    this.setState({trxRequestUri: ipfsURI});
-    console.log('IPFS value: ',ipfsURI.length);
-    });
+    if (this.props.callbackUrl) this.baseRequestUri += "&callback=" + encodeURIComponent(this.props.callbackUrl);
+    else this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
+    
+    this.setState({ trxRequestUri: this.baseRequestUri });
   }
 
   onOpenSendTransaction() {
+    if (this.props.callbackUrl) return;
+
     this.interval = setInterval(() => {
       this.checkResponse();
     }, 2000);
   }
 
   onCloseSendTransaction() {
+    if (this.props.callbackUrl) return;
+
     clearInterval(this.interval);
   }
 
@@ -110,7 +106,10 @@ export default class SendTransaction extends Component {
   render() {
     return (
       <div>
-        {this.state.trxRequestUri != undefined && this.state.trxRequestUri != '' &&
+        {this.props.callbackUrl &&
+          <QRCode value={this.state.trxRequestUri} size={this.qrstyle['qrsize']} />
+        }
+        {this.state.trxRequestUri && ! this.props.callbackUrl &&
           <Popup
             trigger={
               <Button id={this.props.id}>

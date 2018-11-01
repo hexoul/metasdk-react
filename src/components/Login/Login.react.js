@@ -13,6 +13,7 @@ export default class Login extends Component {
     data: PropTypes.string,
     service: PropTypes.string,
     callback: PropTypes.func,
+    callbackUrl: PropTypes.string,
     qrsize: PropTypes.number,
     qrvoffset: PropTypes.number,
     qrpadding: PropTypes.string,
@@ -38,18 +39,23 @@ export default class Login extends Component {
     // URI for service
     this.baseRequestUri = "meta://authentication?usage=login&service=" + this.props.service;
     // URI for callback
-    this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
+    if (this.props.callbackUrl) this.baseRequestUri += "&callback=" + encodeURIComponent(this.props.callbackUrl);
+    else this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
     
-    this.setState({requestUri: this.baseRequestUri});
+    this.setState({ requestUri: this.baseRequestUri });
   }
 
   onOpenLogin() {
+    if (this.props.callbackUrl) return;
+
     this.interval = setInterval(() => {
       this.checkResponse();
     }, 2000);
   }
 
   onCloseLogin() {
+    if (this.props.callbackUrl) return;
+
     clearInterval(this.interval);
   }
 
@@ -83,7 +89,10 @@ export default class Login extends Component {
   render() {
     return (
       <div>
-        {this.state.requestUri != undefined && this.state.requestUri != '' &&
+        {this.props.callbackUrl &&
+          <QRCode value={this.state.requestUri} size={this.qrstyle['qrsize']} />
+        }
+        {this.state.requestUri &&
           <Popup
             trigger={
               <Button id={this.props.id}>
