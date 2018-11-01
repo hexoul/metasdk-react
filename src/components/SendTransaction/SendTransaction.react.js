@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import { Button, Popup } from 'semantic-ui-react';
 
 import * as util from '../util';
+import ipfs from '../ipfs';
 
 var QRCode = require('qrcode.react');
 var https = require('https');
 
 export default class SendTransaction extends Component {
-  
+
   static propTypes = {
     request: PropTypes.any,
     to: PropTypes.string,
@@ -55,8 +56,18 @@ export default class SendTransaction extends Component {
     this.baseRequestUri += "&service=" + this.props.service;
     // URI for callback
     this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
-    
-    this.setState({trxRequestUri: this.baseRequestUri});
+
+    // // Pure QR value
+    // this.setState({trxRequestUri: this.baseRequestUri});
+    // console.log('Pure length: ',this.baseRequestUri.length);
+
+    // IPFS QR value
+    ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
+    var ipfsURI = 'https://ipfs.infura.io:5001/api/v0/cat?arg='+ipfsHash[0].hash;
+
+    this.setState({trxRequestUri: ipfsURI});
+    console.log('IPFS value: ',ipfsURI.length);
+    });
   }
 
   onOpenSendTransaction() {

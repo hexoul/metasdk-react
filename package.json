@@ -66,6 +66,7 @@
   ],
   "dependencies": {
     "https": "^1.0.0",
+    "ipfs-api": "^24.0.2",
     "node-rsa": "^1.0.1",
     "qrcode.react": "^0.8.0",
     "semantic-ui-react": "^0.82.3"
