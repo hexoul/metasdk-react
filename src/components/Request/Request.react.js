@@ -61,9 +61,10 @@ export default class Request extends Component {
     // URI for pubkey
     this.baseRequestUri += "&public_key=" + pubkey;
 
-    var cb = (uri) => { this.setState({requestUri: uri}); console.log('Request ipfs hash: ', uri);}
-    ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => { 
-      if (!err) { cb(ipfsHash[0].hash) }  else { cb(this.baseRequestUri) }
+    var cb = (uri) => this.setState({trxRequestUri: uri});
+    ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
+      if (! err) { console.log('IPFS hash:', ipfsHash[0].hash); cb(ipfsHash[0].hash); }
+      else cb(this.baseRequestUri);
     });
   }
 

@@ -43,9 +43,10 @@ export default class Login extends Component {
     if (this.props.callbackUrl) this.baseRequestUri += "&callback=" + encodeURIComponent(this.props.callbackUrl);
     else this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
     
-    var cb = (uri) => { this.setState({requestUri: uri}); console.log('Login ipfs hash: ', uri);}
-    ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => { 
-      if (!err) { cb(ipfsHash[0].hash) }  else { cb(this.baseRequestUri) }
+    var cb = (uri) => this.setState({trxRequestUri: uri});
+    ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
+      if (! err) { console.log('IPFS hash:', ipfsHash[0].hash); cb(ipfsHash[0].hash); }
+      else cb(this.baseRequestUri);
     });
   }
 
