@@ -59,7 +59,11 @@ export default class SendTransaction extends Component {
     if (this.props.callbackUrl) this.baseRequestUri += "&callback=" + encodeURIComponent(this.props.callbackUrl);
     else this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
     
-    this.setState({ trxRequestUri: this.baseRequestUri });
+    ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
+      //var ipfsURI = 'https://ipfs.infura.io:5001/api/v0/cat?arg='+ipfsHash[0].hash;
+      this.setState({trxRequestUri: ipfsHash[0].hash});
+      console.log('IPFS Hash: ',ipfsHash[0].hash);
+    });
   }
 
   onOpenSendTransaction() {
