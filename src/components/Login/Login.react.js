@@ -94,7 +94,7 @@ export default class Login extends Component {
   render() {
     return (
       <div>
-        {this.props.callbackUrl &&
+        {this.state.trxRequestUri && this.props.callbackUrl &&
           <QRCode value={this.state.requestUri} size={this.qrstyle['qrsize']} />
         }
         {this.state.requestUri &&

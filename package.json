@@ -1,6 +1,6 @@
 {
   "name": "metasdk-react",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "SDK to communicate between React and App using QRCode",
   "author": "hexoul",
   "license": "MIT",

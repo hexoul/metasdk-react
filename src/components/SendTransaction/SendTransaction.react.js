@@ -110,7 +110,7 @@ export default class SendTransaction extends Component {
   render() {
     return (
       <div>
-        {this.props.callbackUrl &&
+        {this.state.trxRequestUri && this.props.callbackUrl &&
           <QRCode value={this.state.trxRequestUri} size={this.qrstyle['qrsize']} />
         }
         {this.state.trxRequestUri && ! this.props.callbackUrl &&
