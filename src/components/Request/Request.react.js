@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Popup } from 'semantic-ui-react';
 
 import * as util from '../util';
-import styles from './styles.css';
+import ipfs from '../ipfs';
 
 const NodeRSA = require('node-rsa');
 var QRCode = require('qrcode.react');
@@ -61,7 +61,10 @@ export default class Request extends Component {
     // URI for pubkey
     this.baseRequestUri += "&public_key=" + pubkey;
 
-    this.setState({ requestUri: this.baseRequestUri });
+    var cb = (uri) => { this.setState({requestUri: uri}); console.log('Request ipfs hash: ', uri);}
+    ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => { 
+      if (!err) { cb(ipfsHash[0].hash) }  else { cb(this.baseRequestUri) }
+    });
   }
 
   onOpenRequest() {
