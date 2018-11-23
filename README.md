@@ -18,7 +18,6 @@ npm install --save metasdk-react
 
 ## Usage
 
-NOTE: Enabling CORS is necessary
 If `callbackUrl` will be given as prop, a component shows QR code directly, not popup button.
 
 ```jsx
