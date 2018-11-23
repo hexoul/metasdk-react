@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactLoading from 'react-loading';
 import PropTypes from 'prop-types';
 import { Button, Popup } from 'semantic-ui-react';
 
@@ -32,7 +33,7 @@ export default class Request extends Component {
     this.reqinfo = {};
     this.state = {
       session: util.MakeSessionID(),
-      requestUri: '',
+      trxRequestUri: '',
     };
   }
 
@@ -117,6 +118,12 @@ export default class Request extends Component {
   render() {
     return (
       <div>
+        {! this.state.trxRequestUri &&
+          <center>
+            Making QRcode through IPFS...
+            <ReactLoading type='spin' color='#1DA57A' height='50px' width='50px' />
+          </center>
+        }
         {this.state.trxRequestUri && this.props.callbackUrl &&
           <QRCode value={this.state.requestUri} size={this.qrstyle['qrsize']} />
         }
