@@ -102,9 +102,9 @@ export default class Login extends Component {
           </center>
         }
         {this.state.trxRequestUri && this.props.callbackUrl &&
-          <QRCode value={this.state.requestUri} size={this.qrstyle['qrsize']} />
+          <QRCode value={this.state.trxRequestUri} size={this.qrstyle['qrsize']} />
         }
-        {this.state.requestUri &&
+        {this.state.trxRequestUri &&
           <Popup
             trigger={
               <Button id={this.props.id}>
@@ -119,7 +119,7 @@ export default class Login extends Component {
             style={{
               padding: this.qrstyle['qrpadding'],
               backgroundColor: 'white'}}>
-              <QRCode value={this.state.requestUri} size={this.qrstyle['qrsize']} />
+              <QRCode value={this.state.trxRequestUri} size={this.qrstyle['qrsize']} />
           </Popup>
         }
       </div>
