@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactLoading from 'react-loading';
 import PropTypes from 'prop-types';
 import { Button, Popup } from 'semantic-ui-react';
 
@@ -28,7 +29,7 @@ export default class Login extends Component {
     super();
     this.state = {
       session: util.MakeSessionID(),
-      requestUri: '',
+      trxRequestUri: '',
     };
   }
 
@@ -43,7 +44,7 @@ export default class Login extends Component {
     if (this.props.callbackUrl) this.baseRequestUri += "&callback=" + encodeURIComponent(this.props.callbackUrl);
     else this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
     
-    var cb = (uri) => this.setState({trxRequestUri: uri});
+    var cb = (uri) => this.setState({ trxRequestUri: uri });
     ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
       if (! err) { console.log('IPFS hash:', ipfsHash[0].hash); cb(ipfsHash[0].hash); }
       else cb(this.baseRequestUri);
@@ -94,6 +95,12 @@ export default class Login extends Component {
   render() {
     return (
       <div>
+        {! this.state.trxRequestUri &&
+          <center>
+            Making QRcode through IPFS...
+            <ReactLoading type='spin' color='#1DA57A' height='50px' width='50px' />
+          </center>
+        }
         {this.state.trxRequestUri && this.props.callbackUrl &&
           <QRCode value={this.state.requestUri} size={this.qrstyle['qrsize']} />
         }
