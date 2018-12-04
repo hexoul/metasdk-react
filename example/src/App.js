@@ -56,7 +56,7 @@ export default class App extends Component {
           request={this.request}
           usage='example'
           // AA or SP encryption_key(secp256k1 public key)
-          // adminMetaId=''
+          // metaID=''
           callback={this.requestCallbackExample}
           qrsize={256}
         />

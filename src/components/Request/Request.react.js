@@ -19,7 +19,7 @@ export default class Request extends Component {
     usage: PropTypes.string,
     callback: PropTypes.func,
     callbackUrl: PropTypes.string,
-    //adminMetaId: PropTypes.string,
+    //metaID: PropTypes.string,
     qrsize: PropTypes.number,
     qrvoffset: PropTypes.number,
     qrpadding: PropTypes.string,
@@ -57,16 +57,14 @@ export default class Request extends Component {
     this.baseRequestUri = "meta://information?usage=" + this.props.usage;
 
     // URI for request
-    this.baseRequestUri += "&request=";
-    this.props.request.map((req) => { this.baseRequestUri += req + ',' });
-    this.baseRequestUri = this.baseRequestUri.slice(0,this.baseRequestUri.length-1);
+    this.baseRequestUri += "&request=" + this.props.request.join(',');
 
     // URI for callback
     if (this.props.callbackUrl) this.baseRequestUri += "&callback=" + encodeURIComponent(this.props.callbackUrl);
-    else this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" 
-                                + this.state.session;
+    else this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
+    
     // URI for AA or SP meta ID
-    //this.baseRequestUri += "&meta_id=" + this.props.adminMetaId;
+    //this.baseRequestUri += "&meta_id=" + this.props.metaID;
 
     // URI for pubkey
     this.baseRequestUri += "&public_key=" + pubkey;

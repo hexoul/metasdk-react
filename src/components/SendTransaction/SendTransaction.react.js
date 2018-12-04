@@ -82,8 +82,8 @@ export default class SendTransaction extends Component {
   checkResponse() {
     // TxID check
     https.request({
-      host: 'axp8xmvyn0.execute-api.ap-northeast-2.amazonaws.com',
-      path: '/beta?key=' + this.state.session,
+      host: '2g5198x91e.execute-api.ap-northeast-2.amazonaws.com',
+      path: '/test?key=' + this.state.session,
     }, (res) => {
       let data = '';
       res.on('data', (chunk) => {
