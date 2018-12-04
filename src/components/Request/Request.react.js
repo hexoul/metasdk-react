@@ -16,9 +16,10 @@ export default class Request extends Component {
   
   static propTypes = {
     request: PropTypes.array,
-    service: PropTypes.string,
+    usage: PropTypes.string,
     callback: PropTypes.func,
     callbackUrl: PropTypes.string,
+    //adminMetaId: PropTypes.string,
     qrsize: PropTypes.number,
     qrvoffset: PropTypes.number,
     qrpadding: PropTypes.string,
@@ -52,19 +53,27 @@ export default class Request extends Component {
       .replace(/\s+|\n\r|\n|\r$/gm, '');
     pubkey = encodeURIComponent(pubkey);
     
-    // URI for service
-    this.baseRequestUri = "meta://information?service=" + this.props.service;
+    // URI for usage
+    this.baseRequestUri = "meta://information?usage=" + this.props.usage;
+
     // URI for request
-    this.props.request.map((req) => {this.baseRequestUri += "&request=" + req;});
+    this.baseRequestUri += "&request=";
+    this.props.request.map((req) => { this.baseRequestUri += req + ',' });
+    this.baseRequestUri = this.baseRequestUri.slice(0,this.baseRequestUri.length-1);
+
     // URI for callback
     if (this.props.callbackUrl) this.baseRequestUri += "&callback=" + encodeURIComponent(this.props.callbackUrl);
-    else this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
+    else this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" 
+                                + this.state.session;
+    // URI for AA or SP meta ID
+    //this.baseRequestUri += "&meta_id=" + this.props.adminMetaId;
+
     // URI for pubkey
     this.baseRequestUri += "&public_key=" + pubkey;
 
     var cb = (uri) => this.setState({trxRequestUri: uri});
     ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
-      if (! err) { console.log('IPFS hash:', ipfsHash[0].hash); cb(ipfsHash[0].hash); }
+      if (! err) { console.log('IPFS hash:', ipfsHash[0].hash, this.baseRequestUri); cb(ipfsHash[0].hash); }
       else cb(this.baseRequestUri);
     });
   }
@@ -95,14 +104,25 @@ export default class Request extends Component {
       res.on('end', () => {
         if (data !== '') {
           clearInterval(this.interval);
-          var json = JSON.parse(data);
-          var secret = crypto.privateDecrypt({key: this.privkey, padding: constants.RSA_PKCS1_PADDING}, Buffer.from(json['secret'], 'base64'));
+          var responseBytes = Buffer.from(data, 'base64');
+
+          // aeskey + encryptedData
+          var encryptedAesKey = responseBytes.slice(0, 256);
+          var encryptedData = responseBytes.slice(256, responseBytes.byteLength);
+
+          // Decrypt aes key with RSA
+          var secret = crypto.privateDecrypt({ key: this.privkey, padding: constants.RSA_PKCS1_PADDING}, encryptedAesKey );
+
+          // Decrypt data with AES
+          var aes = crypto.createDecipheriv('aes-256-ecb', secret, '');
+          var result = aes.update(encryptedData);
+          result += aes.final();
+
+          var json = JSON.parse(result);
           this.props.request.map((req) => {
             if (json['data'][req] == undefined || json['data'][req] == '') return;
 
-            let nDecipher = crypto.createDecipheriv('aes-256-ecb', secret, '');
-            let data = nDecipher.update(Buffer.from(json['data'][req]['value'], 'base64'), 'base64', 'utf-8');
-            data += nDecipher.final('utf-8');
+            let data = Buffer.from(json['data'][req], 'base64').toString('utf8');
             this.reqinfo[req] = data;
           });
           if (this.props.callback) {

@@ -8,7 +8,8 @@ export default class App extends Component {
 
   constructor() {
     super();
-    this.request = ['name', 'email'];
+    // Topic - 10: name, 20: phone number, 30: e-mail
+    this.request = ['10', '20', '30'];
   }
 
   componentWillMount() {
@@ -53,8 +54,11 @@ export default class App extends Component {
         <Request
           id='requestID'
           request={this.request}
-          service='example'
+          usage='example'
+          // AA or SP encryption_key(secp256k1 public key)
+          // adminMetaId=''
           callback={this.requestCallbackExample}
+          qrsize={256}
         />
         <hr />
 
@@ -71,7 +75,6 @@ export default class App extends Component {
           id='sendTransactionWithCallbackURL'
           request={this.trxRequest}
           usage='method'
-          service='example'
           callbackUrl='http://localhost/callback'
         />
         <hr />
@@ -82,7 +85,6 @@ export default class App extends Component {
           value={this.web3.utils.toWei('0.01', 'ether')}
           data='data2'
           usage='method'
-          service='example'
           qrsize={256}
           qrvoffset={20}
           qrpadding='2em'

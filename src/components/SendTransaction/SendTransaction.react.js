@@ -17,7 +17,6 @@ export default class SendTransaction extends Component {
     value: PropTypes.string,
     data: PropTypes.string,
     usage: PropTypes.string,
-    service: PropTypes.string,
     callback: PropTypes.func,
     callbackUrl: PropTypes.string,
     qrsize: PropTypes.number,
@@ -54,8 +53,7 @@ export default class SendTransaction extends Component {
     }
     // URI for usage
     this.baseRequestUri += "&usage=" + this.props.usage;
-    // URI for service
-    this.baseRequestUri += "&service=" + this.props.service;
+    
     // URI for callback
     if (this.props.callbackUrl) this.baseRequestUri += "&callback=" + encodeURIComponent(this.props.callbackUrl);
     else this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
