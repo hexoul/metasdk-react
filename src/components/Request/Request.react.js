@@ -61,7 +61,7 @@ export default class Request extends Component {
 
     // URI for callback
     if (this.props.callbackUrl) this.baseRequestUri += "&callback=" + encodeURIComponent(this.props.callbackUrl);
-    else this.baseRequestUri += "&callback=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
+    else this.baseRequestUri += "&callback=https%3A%2F%2F0s5eebblre.execute-api.ap-northeast-2.amazonaws.com/dev?key=" + this.state.session;
     
     // URI for AA or SP meta ID
     //this.baseRequestUri += "&meta_id=" + this.props.metaID;
@@ -92,8 +92,8 @@ export default class Request extends Component {
 
   checkResponse() {
     https.request({
-      host: '2g5198x91e.execute-api.ap-northeast-2.amazonaws.com',
-      path: '/test?key=' + this.state.session,
+      host: '0s5eebblre.execute-api.ap-northeast-2.amazonaws.com',
+      path: '/dev?key=' + this.state.session,
     }, (res) => {
       let data = '';
       res.on('data', (chunk) => {
