@@ -104,11 +104,11 @@ export default class Request extends Component {
           clearInterval(this.interval);
           var responseBytes = Buffer.from(data, 'base64');
 
-          // aeskey + encryptedData
+          // Get AES key and encrypted data
           var encryptedAesKey = responseBytes.slice(0, 256);
           var encryptedData = responseBytes.slice(256, responseBytes.byteLength);
 
-          // Decrypt aes key with RSA
+          // Decrypt AES key with RSA
           var secret = crypto.privateDecrypt({ key: this.privkey, padding: constants.RSA_PKCS1_PADDING}, encryptedAesKey );
 
           // Decrypt data with AES

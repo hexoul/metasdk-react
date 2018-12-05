@@ -6,11 +6,11 @@ const compiledBNB = [{"constant":true,"inputs":[],"name":"name","outputs":[{"nam
 
 export default class App extends Component {
 
-  constructor() {
-    super();
-    // Topic - 10: name, 20: phone number, 30: e-mail
-    this.request = ['10', '20', '30'];
-  }
+  // Topic number
+  // - 10: name
+  // - 20: phone
+  // - 30: email
+  request = ['10', '20', '30'];
 
   componentWillMount() {
     if(typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
@@ -55,8 +55,7 @@ export default class App extends Component {
           id='requestID'
           request={this.request}
           usage='example'
-          // AA or SP encryption_key(secp256k1 public key)
-          // metaID=''
+          metaID='0x31a46cd5FF7d0DC32b93149dB1A695b68Fc1aa00'
           callback={this.requestCallbackExample}
           qrsize={256}
         />
@@ -66,7 +65,6 @@ export default class App extends Component {
           id='sendTransactionId1'
           request={this.trxRequest}
           usage='method'
-          service='example'
           callback={this.callbackExample}
         />
         <hr />

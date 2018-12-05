@@ -7,7 +7,7 @@
 ## Install
 
 ```bash
-npm install --save metasdk-react
+npm i metasdk-react
 ```
 
 ## Components
@@ -37,8 +37,8 @@ class Example extends Component {
         />
 
         <Request
-          request={['name', 'email']}
-          service='example'
+          request={['10', '20', '30']}
+          usage='example'
           callback={this.callbackExample}
         />
 
@@ -46,7 +46,6 @@ class Example extends Component {
           id='sendTransactionByRequest'
           request={this.trxRequest}
           usage='method'
-          service='example'
           callback={this.callbackExample}
         />
 
@@ -54,7 +53,6 @@ class Example extends Component {
           id='sendTransactionWithCallbackURL'
           request={this.trxRequest}
           usage='method'
-          service='example'
           callbackUrl='http://localhost/callback'
         />
 
@@ -63,7 +61,6 @@ class Example extends Component {
           to='0x8101487270f5411cf213b8d348a2ab46df66245d'
           value='0x01'
           data='0x02'
-          service='example'
           qrsize={256}
           qrvoffset={20}
           qrpadding='2em'
