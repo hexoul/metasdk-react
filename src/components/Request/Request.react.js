@@ -60,13 +60,8 @@ export default class Request extends Component {
     this.baseRequestUri += "&r=" + this.props.request.join(',');
 
     // URI for callback
-<<<<<<< HEAD
-    if (this.props.callbackUrl) this.baseRequestUri += "&c=" + encodeURIComponent(this.props.callbackUrl);
-    else this.baseRequestUri += "&c=https%3A%2F%2F2g5198x91e.execute-api.ap-northeast-2.amazonaws.com/test?key=" + this.state.session;
-=======
     if (this.props.callbackUrl) this.baseRequestUri += "&callback=" + encodeURIComponent(this.props.callbackUrl);
     else this.baseRequestUri += "&callback=https%3A%2F%2F0s5eebblre.execute-api.ap-northeast-2.amazonaws.com/dev?key=" + this.state.session;
->>>>>>> f55556696c59f314660ef055040ee744f614110d
     
     // URI for AA or SP meta ID
     //this.baseRequestUri += "&m=" + this.props.metaID;
