@@ -54,24 +54,24 @@ export default class Request extends Component {
     pubkey = encodeURIComponent(pubkey);
     
     // URI for usage
-    this.baseRequestUri = "meta://information?usage=" + this.props.usage;
+    this.baseRequestUri = "meta://information?u=" + this.props.usage;
 
     // URI for request
-    this.baseRequestUri += "&request=" + this.props.request.join(',');
+    this.baseRequestUri += "&r=" + this.props.request.join(',');
 
     // URI for callback
     if (this.props.callbackUrl) this.baseRequestUri += "&callback=" + encodeURIComponent(this.props.callbackUrl);
     else this.baseRequestUri += "&callback=https%3A%2F%2F0s5eebblre.execute-api.ap-northeast-2.amazonaws.com/dev?key=" + this.state.session;
     
     // URI for AA or SP meta ID
-    //this.baseRequestUri += "&meta_id=" + this.props.metaID;
+    //this.baseRequestUri += "&m=" + this.props.metaID;
 
     // URI for pubkey
-    this.baseRequestUri += "&public_key=" + pubkey;
+    this.baseRequestUri += "&p=" + pubkey;
 
     var cb = (uri) => this.setState({trxRequestUri: uri});
     ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
-      if (! err) { console.log('IPFS hash:', ipfsHash[0].hash, this.baseRequestUri); cb(ipfsHash[0].hash); }
+      if (! err) { console.log('Request IPFS hash:', ipfsHash[0].hash); cb(ipfsHash[0].hash); }
       else cb(this.baseRequestUri);
     });
   }

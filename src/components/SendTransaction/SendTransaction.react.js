@@ -42,17 +42,17 @@ export default class SendTransaction extends Component {
 
   componentDidMount() {
     // URI for transaction
-    this.baseRequestUri = "meta://transaction?to=";
+    this.baseRequestUri = "meta://transaction?t=";
     // URI for request
     if(this.props.request != undefined && this.props.request != '') {
-      this.baseRequestUri += this.props.request.params[0].to + "&value=" + this.props.request.params[0].value + "&data=" + this.props.request.params[0].data;
+      this.baseRequestUri += this.props.request.params[0].to + "&v=" + this.props.request.params[0].value + "&d=" + this.props.request.params[0].data;
     }
     // URI for to, value and data
     else if(this.props.to != undefined && this.props.to != '') {
-      this.baseRequestUri += this.props.to + "&value=" + util.ConvertVal2Hexd(this.props.value) + "&data=" + util.ConvertData2Hexd(this.props.data);
+      this.baseRequestUri += this.props.to + "&v=" + util.ConvertVal2Hexd(this.props.value) + "&d=" + util.ConvertData2Hexd(this.props.data);
     }
     // URI for usage
-    this.baseRequestUri += "&usage=" + this.props.usage;
+    this.baseRequestUri += "&u=" + this.props.usage;
     
     // URI for callback
     if (this.props.callbackUrl) this.baseRequestUri += "&callback=" + encodeURIComponent(this.props.callbackUrl);
@@ -60,7 +60,7 @@ export default class SendTransaction extends Component {
 
     var cb = (uri) => this.setState({trxRequestUri: uri});
     ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
-      if (! err) { console.log('IPFS hash:', ipfsHash[0].hash); cb(ipfsHash[0].hash); }
+      if (! err) { console.log('SendTransaction IPFS hash:', ipfsHash[0].hash); cb(ipfsHash[0].hash); }
       else cb(this.baseRequestUri);
     });
   }
