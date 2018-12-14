@@ -6,7 +6,7 @@ const POSITIONS = [
   'bottom center',
   'bottom right',
   'left center',
-  'right center',
+  'right center'
 ]
 
 const CacheServer = {
@@ -20,7 +20,7 @@ const CacheServer = {
  * @param {map} src props
  * @param {string} caller name
  */
-function setQRstyle(dst, src, caller) {
+function setQRstyle (dst, src, caller) {
   dst['qrpopup'] = src.qrpopup ? src.qrpopup : true
   dst['qrsize'] = src.qrsize > 0 ? src.qrsize : 128
   dst['qrvoffset'] = src.qrvoffset >= 0 ? src.qrvoffset : 20
@@ -32,16 +32,15 @@ function setQRstyle(dst, src, caller) {
 /**
  * Make session ID randomly, the length can be changed.
  */
-function makeSessionID() {
-    var text = ''
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    for (var i = 0; i < 8; i++)
-      text += possible.charAt(Math.floor(Math.random() * possible.length))
-    return text
+function makeSessionID () {
+  var text = ''
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  for (var i = 0; i < 8; i++) { text += possible.charAt(Math.floor(Math.random() * possible.length)) }
+  return text
 }
 
-function isHexString(arg) {
-  if (arg != undefined && typeof arg === 'string' && arg.length > 2 && arg.substring(0,2) != '0x') {
+function isHexString (arg) {
+  if (arg !== undefined && typeof arg === 'string' && arg.length > 2 && arg.substring(0, 2) !== '0x') {
     return false
   }
   return true
@@ -49,24 +48,24 @@ function isHexString(arg) {
 
 /**
  * Convert to hexadecimal for value property of SendTransaction
- * @param {*} value 
+ * @param {*} value
  */
-function convertVal2Hexd(value) {
-  if (! isHexString(value)) {
-    return '0x' + parseInt(value,10).toString(16)
-  } 
+function convertVal2Hexd (value) {
+  if (!isHexString(value)) {
+    return '0x' + parseInt(value, 10).toString(16)
+  }
   return value
 }
 
 /**
  * Convert to hexadecimal for data property of SendTransaction
- * @param {*} data 
+ * @param {*} data
  */
-function convertData2Hexd(data) {
-  if (! isHexString(data)) {
+function convertData2Hexd (data) {
+  if (!isHexString(data)) {
     var hex = ''
-	  for (var i=0; i < data.length; i++) {
-		  hex += data.charCodeAt(i).toString(16)
+    for (var i = 0; i < data.length; i++) {
+      hex += data.charCodeAt(i).toString(16)
     }
     return '0x' + hex
   }

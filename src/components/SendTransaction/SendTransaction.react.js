@@ -10,7 +10,6 @@ var QRCode = require('qrcode.react')
 var https = require('https')
 
 export default class SendTransaction extends Component {
-
   static propTypes = {
     request: PropTypes.any,
     to: PropTypes.string,
@@ -24,99 +23,98 @@ export default class SendTransaction extends Component {
     qrvoffset: PropTypes.number,
     qrpadding: PropTypes.string,
     qrposition: PropTypes.string,
-    qrtext: PropTypes.string,
+    qrtext: PropTypes.string
   }
 
   qrstyle = {}
 
-  constructor() {
+  constructor () {
     super()
     this.state = {
       session: util.makeSessionID(),
-      trxRequestUri: '',
+      trxRequestUri: ''
     }
   }
 
-  componentWillMount() {
+  componentWillMount () {
     util.setQRstyle(this.qrstyle, this.props, 'SendTransaction')
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // URI for transaction
     this.baseRequestUri = 'meta://transaction?t='
 
-    // URI for request
-    if(this.props.request != undefined && this.props.request != '') {
+    if (this.props.request !== undefined && this.props.request !== '') {
+      // URI for request
       this.baseRequestUri += this.props.request.params[0].to + '&v=' + this.props.request.params[0].value + '&d=' + this.props.request.params[0].data
-    }
-    // URI for to, value and data
-    else if(this.props.to != undefined && this.props.to != '') {
-      this.baseRequestUri += this.props.to + '&v=' + util.convertVal2Hexd(this.props.value) + '&d=' + util.convertData2Hexd(this.props.data);
+    } else if (this.props.to !== undefined && this.props.to !== '') {
+      // URI for to, value and data
+      this.baseRequestUri += this.props.to + '&v=' + util.convertVal2Hexd(this.props.value) + '&d=' + util.convertData2Hexd(this.props.data)
     }
     // URI for usage
     this.baseRequestUri += '&u=' + this.props.usage
-    
+
     // URI for callback
     if (this.props.callbackUrl) this.baseRequestUri += '&callback=' + encodeURIComponent(this.props.callbackUrl)
     else this.baseRequestUri += '&callback=https%3A%2F%2F' + util.CacheServer.host + '/' + util.CacheServer.stage + '?key=' + this.state.session
 
     var cb = (uri) => this.setState({ trxRequestUri: uri })
     ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
-      if (! err) {
+      if (!err) {
         console.log('SendTransaction IPFS hash:', ipfsHash[0].hash)
         cb(ipfsHash[0].hash)
       } else cb(this.baseRequestUri)
     })
   }
 
-  onOpenSendTransaction() {
-    if (! this.qrstyle.qrpopup) return
+  onOpenSendTransaction () {
+    if (!this.qrstyle.qrpopup) return
 
     this.interval = setInterval(() => {
       this.checkResponse()
     }, 2000)
   }
 
-  onCloseSendTransaction() {
-    if (! this.qrstyle.qrpopup) return
+  onCloseSendTransaction () {
+    if (!this.qrstyle.qrpopup) return
 
     clearInterval(this.interval)
   }
 
-  checkResponse() {
+  checkResponse () {
     // TxID check
     https
-    .request({
-      host: util.CacheServer.host,
-      path: '/' + util.CacheServer.stage + '?key=' + this.state.session,
-    }, (res) => {
-      let data = ''
-      res.on('data', (chunk) => {
-        data += chunk
-      });
-      res.on('end', () => {
-        if (data !== '') {
-          clearInterval(this.interval)
-          var json = JSON.parse(data)
-          if (this.props.callback) {
-            this.props.callback({
-              txid: json['txid'],
-              address: json['address'],
-            })
+      .request({
+        host: util.CacheServer.host,
+        path: '/' + util.CacheServer.stage + '?key=' + this.state.session
+      }, (res) => {
+        let data = ''
+        res.on('data', (chunk) => {
+          data += chunk
+        })
+        res.on('end', () => {
+          if (data !== '') {
+            clearInterval(this.interval)
+            var json = JSON.parse(data)
+            if (this.props.callback) {
+              this.props.callback({
+                txid: json['txid'],
+                address: json['address']
+              })
+            }
           }
-        }
+        })
       })
-    })
-    .on('error', (err) => {
-      console.log('error', err)
-    })
-    .end()
+      .on('error', (err) => {
+        console.log('error', err)
+      })
+      .end()
   }
 
-  render() {
+  render () {
     return (
       <div>
-        {! this.state.trxRequestUri &&
+        {!this.state.trxRequestUri &&
           <center>
             Making QRcode through IPFS...
             <ReactLoading type='spin' color='#1DA57A' height='50px' width='50px' />
@@ -125,7 +123,7 @@ export default class SendTransaction extends Component {
         {this.state.trxRequestUri && this.props.callbackUrl &&
           <QRCode value={this.state.trxRequestUri} size={this.qrstyle['qrsize']} />
         }
-        {this.state.trxRequestUri && ! this.props.callbackUrl &&
+        {this.state.trxRequestUri && !this.props.callbackUrl &&
           <Popup
             trigger={
               <Button id={this.props.id}>
@@ -139,8 +137,9 @@ export default class SendTransaction extends Component {
             position={this.qrstyle['qrposition']}
             style={{
               padding: this.qrstyle['qrpadding'],
-              backgroundColor: 'white'}}>
-              <QRCode value={this.state.trxRequestUri} size={this.qrstyle['qrsize']} />
+              backgroundColor: 'white' }}
+          >
+            <QRCode value={this.state.trxRequestUri} size={this.qrstyle['qrsize']} />
           </Popup>
         }
       </div>
