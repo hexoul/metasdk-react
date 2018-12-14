@@ -73,6 +73,7 @@ export default class App extends Component {
           id='sendTransactionWithCallbackURL'
           request={this.trxRequest}
           usage='method'
+          qrpopup={false}
           callbackUrl='http://localhost/callback'
         />
         <hr />

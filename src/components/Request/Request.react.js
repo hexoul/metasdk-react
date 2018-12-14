@@ -20,6 +20,7 @@ export default class Request extends Component {
     callback: PropTypes.func,
     callbackUrl: PropTypes.string,
     //metaID: PropTypes.string,
+    qrpopup: PropTypes.bool,
     qrsize: PropTypes.number,
     qrvoffset: PropTypes.number,
     qrpadding: PropTypes.string,
@@ -33,17 +34,17 @@ export default class Request extends Component {
     super();
     this.reqinfo = {};
     this.state = {
-      session: util.MakeSessionID(),
+      session: util.makeSessionID(),
       trxRequestUri: '',
     };
   }
 
   componentWillMount() {
-    util.SetQRstyle(this.qrstyle, this.props, 'Request');
+    util.setQRstyle(this.qrstyle, this.props, 'Request');
   }
 
   componentDidMount() {
-    const key = new NodeRSA({b: 2048});
+    const key = new NodeRSA({ b: 2048 });
     this.pubkey = key.exportKey('public');
     this.privkey = key.exportKey('private');
 
@@ -54,30 +55,32 @@ export default class Request extends Component {
     pubkey = encodeURIComponent(pubkey);
     
     // URI for usage
-    this.baseRequestUri = "meta://information?u=" + this.props.usage;
+    this.baseRequestUri = 'meta://information?u=' + this.props.usage;
 
     // URI for request
     this.baseRequestUri += "&r=" + this.props.request.join(',');
 
     // URI for callback
-    if (this.props.callbackUrl) this.baseRequestUri += "&callback=" + encodeURIComponent(this.props.callbackUrl);
-    else this.baseRequestUri += "&callback=https%3A%2F%2F0s5eebblre.execute-api.ap-northeast-2.amazonaws.com/dev?key=" + this.state.session;
+    if (this.props.callbackUrl) this.baseRequestUri += '&callback=' + encodeURIComponent(this.props.callbackUrl);
+    else this.baseRequestUri += '&callback=https%3A%2F%2F' + util.CacheServer.host + '/' + util.CacheServer.stage + '?key=' + this.state.session;
     
-    // URI for AA or SP meta ID
-    //this.baseRequestUri += "&m=" + this.props.metaID;
+    // URI for Meta ID
+    //this.baseRequestUri += '&m=' + this.props.metaID;
 
     // URI for pubkey
-    this.baseRequestUri += "&p=" + pubkey;
+    this.baseRequestUri += '&p=' + pubkey;
 
-    var cb = (uri) => this.setState({trxRequestUri: uri});
+    var cb = (uri) => this.setState({ trxRequestUri: uri });
     ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
-      if (! err) { console.log('Request IPFS hash:', ipfsHash[0].hash); cb(ipfsHash[0].hash); }
-      else cb(this.baseRequestUri);
+      if (! err) {
+        console.log('Request IPFS hash:', ipfsHash[0].hash);
+        cb(ipfsHash[0].hash);
+      } else cb(this.baseRequestUri);
     });
   }
 
   onOpenRequest() {
-    if (this.props.callbackUrl) return;
+    if (! this.qrstyle.qrpopup) return;
 
     this.interval = setInterval(() => {
       this.checkResponse();
@@ -85,15 +88,15 @@ export default class Request extends Component {
   }
 
   onCloseRequest() {
-    if (this.props.callbackUrl) return;
+    if (! this.qrstyle.qrpopup) return;
 
     clearInterval(this.interval);
   }
 
   checkResponse() {
     https.request({
-      host: '0s5eebblre.execute-api.ap-northeast-2.amazonaws.com',
-      path: '/dev?key=' + this.state.session,
+      host: util.CacheServer.host,
+      path: '/' + util.CacheServer.stage + '?key=' + this.state.session,
     }, (res) => {
       let data = '';
       res.on('data', (chunk) => {

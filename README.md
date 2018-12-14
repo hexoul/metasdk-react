@@ -53,6 +53,7 @@ class Example extends Component {
           id='sendTransactionWithCallbackURL'
           request={this.trxRequest}
           usage='method'
+          qrpopup={false}
           callbackUrl='http://localhost/callback'
         />
 
@@ -75,6 +76,7 @@ class Example extends Component {
 ```
 
 QRCode styles can be set for all components like above example `SendTransaction`
+- `qrpopup` decides if QRCode exists within popup or not
 - `qrsize` changes the size of QRCode
 - `qrvoffset` is a vertical offset from origin
 - `qrpadding` applies padding thickness of QRCode as style

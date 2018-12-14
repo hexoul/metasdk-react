@@ -16,6 +16,7 @@ export default class Login extends Component {
     service: PropTypes.string,
     callback: PropTypes.func,
     callbackUrl: PropTypes.string,
+    qrpopup: PropTypes.bool,
     qrsize: PropTypes.number,
     qrvoffset: PropTypes.number,
     qrpadding: PropTypes.string,
@@ -28,31 +29,34 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = {
-      session: util.MakeSessionID(),
+      session: util.makeSessionID(),
       trxRequestUri: '',
     };
   }
 
   componentWillMount() {
-    util.SetQRstyle(this.qrstyle, this.props, 'Login');
+    util.setQRstyle(this.qrstyle, this.props, 'Login');
   }
 
   componentDidMount() {
     // URI for service
-    this.baseRequestUri = "meta://authentication?usage=login&service=" + this.props.service;
+    this.baseRequestUri = 'meta://authentication?usage=login&service=' + this.props.service;
+
     // URI for callback
-    if (this.props.callbackUrl) this.baseRequestUri += "&callback=" + encodeURIComponent(this.props.callbackUrl);
-    else this.baseRequestUri += "&callback=https%3A%2F%2F0s5eebblre.execute-api.ap-northeast-2.amazonaws.com/dev?key=" + this.state.session;
+    if (this.props.callbackUrl) this.baseRequestUri += '&callback=' + encodeURIComponent(this.props.callbackUrl);
+    else this.baseRequestUri += '&callback=https%3A%2F%2F' + util.CacheServer.host + '/' + util.CacheServer.stage + '?key=' + this.state.session;
     
     var cb = (uri) => this.setState({ trxRequestUri: uri });
     ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
-      if (! err) { console.log('IPFS hash:', ipfsHash[0].hash); cb(ipfsHash[0].hash); }
-      else cb(this.baseRequestUri);
+      if (! err) {
+        console.log('IPFS hash:', ipfsHash[0].hash);
+        cb(ipfsHash[0].hash);
+      } else cb(this.baseRequestUri);
     });
   }
 
   onOpenLogin() {
-    if (this.props.callbackUrl) return;
+    if (! this.qrstyle.qrpopup) return;
 
     this.interval = setInterval(() => {
       this.checkResponse();
@@ -60,15 +64,15 @@ export default class Login extends Component {
   }
 
   onCloseLogin() {
-    if (this.props.callbackUrl) return;
+    if (! this.qrstyle.qrpopup) return;
 
     clearInterval(this.interval);
   }
 
   checkResponse() {
     https.request({
-      host: '0s5eebblre.execute-api.ap-northeast-2.amazonaws.com',
-      path: '/dev?key=' + this.state.session,
+      host: util.CacheServer.host,
+      path: '/' + util.CacheServer.stage + '?key=' + this.state.session,
     }, (res) => {
       let data = '';
       res.on('data', (chunk) => {

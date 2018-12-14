@@ -1,4 +1,4 @@
-export const POSITIONS = [
+const POSITIONS = [
   'top left',
   'top center',
   'top right',
@@ -9,14 +9,20 @@ export const POSITIONS = [
   'right center',
 ]
 
+const CacheServer = {
+  host: 'cache.metadium.com',
+  stage: 'dev'
+};
+
 /**
  * Set QRCode style to dst from src
  * @param {map} dst
  * @param {map} src props
  * @param {string} caller name
  */
-export function SetQRstyle(dst, src, caller) {
-  dst['qrsize'] = src.qrsize > 0 ?  src.qrsize : 128;
+function setQRstyle(dst, src, caller) {
+  dst['qrpopup'] = src.qrpopup ? src.qrpopup : true;
+  dst['qrsize'] = src.qrsize > 0 ? src.qrsize : 128;
   dst['qrvoffset'] = src.qrvoffset >= 0 ? src.qrvoffset : 20;
   dst['qrpadding'] = src.qrpadding ? src.qrpadding : '1em';
   dst['qrposition'] = POSITIONS.includes(src.qrposition) ? src.qrposition : 'bottom right';
@@ -26,9 +32,9 @@ export function SetQRstyle(dst, src, caller) {
 /**
  * Make session ID randomly, the length can be changed.
  */
-export function MakeSessionID() {
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+function makeSessionID() {
+    var text = '';
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for (var i = 0; i < 8; i++)
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
@@ -45,7 +51,7 @@ function isHexString(arg) {
  * Convert to hexadecimal for value property of SendTransaction
  * @param {*} value 
  */
-export function ConvertVal2Hexd(value) {
+function convertVal2Hexd(value) {
   if (! isHexString(value)) {
     return '0x' + parseInt(value,10).toString(16);
   } 
@@ -56,7 +62,7 @@ export function ConvertVal2Hexd(value) {
  * Convert to hexadecimal for data property of SendTransaction
  * @param {*} data 
  */
-export function ConvertData2Hexd(data) {
+function convertData2Hexd(data) {
   if (! isHexString(data)) {
     var hex = '';
 	  for (var i=0; i < data.length; i++) {
@@ -65,4 +71,13 @@ export function ConvertData2Hexd(data) {
     return '0x' + hex;
   }
   return data;
+}
+
+export {
+  POSITIONS,
+  CacheServer,
+  setQRstyle,
+  makeSessionID,
+  convertVal2Hexd,
+  convertData2Hexd
 }

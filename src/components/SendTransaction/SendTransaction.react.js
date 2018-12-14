@@ -19,6 +19,7 @@ export default class SendTransaction extends Component {
     usage: PropTypes.string,
     callback: PropTypes.func,
     callbackUrl: PropTypes.string,
+    qrpopup: PropTypes.bool,
     qrsize: PropTypes.number,
     qrvoffset: PropTypes.number,
     qrpadding: PropTypes.string,
@@ -31,42 +32,45 @@ export default class SendTransaction extends Component {
   constructor() {
     super();
     this.state = {
-      session: util.MakeSessionID(),
+      session: util.makeSessionID(),
       trxRequestUri: '',
     };
   }
 
   componentWillMount() {
-    util.SetQRstyle(this.qrstyle, this.props, 'SendTransaction');
+    util.setQRstyle(this.qrstyle, this.props, 'SendTransaction');
   }
 
   componentDidMount() {
     // URI for transaction
-    this.baseRequestUri = "meta://transaction?t=";
+    this.baseRequestUri = 'meta://transaction?t=';
+
     // URI for request
     if(this.props.request != undefined && this.props.request != '') {
-      this.baseRequestUri += this.props.request.params[0].to + "&v=" + this.props.request.params[0].value + "&d=" + this.props.request.params[0].data;
+      this.baseRequestUri += this.props.request.params[0].to + '&v=' + this.props.request.params[0].value + '&d=' + this.props.request.params[0].data;
     }
     // URI for to, value and data
     else if(this.props.to != undefined && this.props.to != '') {
-      this.baseRequestUri += this.props.to + "&v=" + util.ConvertVal2Hexd(this.props.value) + "&d=" + util.ConvertData2Hexd(this.props.data);
+      this.baseRequestUri += this.props.to + '&v=' + util.convertVal2Hexd(this.props.value) + '&d=' + util.convertData2Hexd(this.props.data);
     }
     // URI for usage
-    this.baseRequestUri += "&u=" + this.props.usage;
+    this.baseRequestUri += '&u=' + this.props.usage;
     
     // URI for callback
-    if (this.props.callbackUrl) this.baseRequestUri += "&callback=" + encodeURIComponent(this.props.callbackUrl);
-    else this.baseRequestUri += "&callback=https%3A%2F%2F0s5eebblre.execute-api.ap-northeast-2.amazonaws.com/dev?key=" + this.state.session;
+    if (this.props.callbackUrl) this.baseRequestUri += '&callback=' + encodeURIComponent(this.props.callbackUrl);
+    else this.baseRequestUri += '&callback=https%3A%2F%2F' + util.CacheServer.host + '/' + util.CacheServer.stage + '?key=' + this.state.session;
 
-    var cb = (uri) => this.setState({trxRequestUri: uri});
+    var cb = (uri) => this.setState({ trxRequestUri: uri });
     ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
-      if (! err) { console.log('SendTransaction IPFS hash:', ipfsHash[0].hash); cb(ipfsHash[0].hash); }
-      else cb(this.baseRequestUri);
+      if (! err) {
+        console.log('SendTransaction IPFS hash:', ipfsHash[0].hash);
+        cb(ipfsHash[0].hash);
+      } else cb(this.baseRequestUri);
     });
   }
 
   onOpenSendTransaction() {
-    if (this.props.callbackUrl) return;
+    if (! this.qrstyle.qrpopup) return;
 
     this.interval = setInterval(() => {
       this.checkResponse();
@@ -74,7 +78,7 @@ export default class SendTransaction extends Component {
   }
 
   onCloseSendTransaction() {
-    if (this.props.callbackUrl) return;
+    if (! this.qrstyle.qrpopup) return;
 
     clearInterval(this.interval);
   }
@@ -82,8 +86,8 @@ export default class SendTransaction extends Component {
   checkResponse() {
     // TxID check
     https.request({
-      host: '0s5eebblre.execute-api.ap-northeast-2.amazonaws.com',
-      path: '/dev?key=' + this.state.session,
+      host: util.CacheServer.host,
+      path: '/' + util.CacheServer.stage + '?key=' + this.state.session,
     }, (res) => {
       let data = '';
       res.on('data', (chunk) => {
