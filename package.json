@@ -21,7 +21,7 @@
   "scripts": {
     "test:watch": "react-scripts test --env=jsdom",
     "test:codestyle": "standard --parser babel-eslint",
-    "fix": "standard --fix",
+    "fix": "standard --parser babel-eslint --fix",
     "build": "rollup -c",
     "start": "rollup -c -w",
     "prepare": "npm run build",
