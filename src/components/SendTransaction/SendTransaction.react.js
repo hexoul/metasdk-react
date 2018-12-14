@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import ReactLoading from 'react-loading';
-import PropTypes from 'prop-types';
-import { Button, Popup } from 'semantic-ui-react';
+import React, { Component } from 'react'
+import ReactLoading from 'react-loading'
+import PropTypes from 'prop-types'
+import { Button, Popup } from 'semantic-ui-react'
 
-import * as util from '../util';
-import ipfs from '../ipfs';
+import * as util from '../util'
+import ipfs from '../ipfs'
 
-var QRCode = require('qrcode.react');
-var https = require('https');
+var QRCode = require('qrcode.react')
+var https = require('https')
 
 export default class SendTransaction extends Component {
 
@@ -27,87 +27,90 @@ export default class SendTransaction extends Component {
     qrtext: PropTypes.string,
   }
 
-  qrstyle = {};
+  qrstyle = {}
 
   constructor() {
-    super();
+    super()
     this.state = {
       session: util.makeSessionID(),
       trxRequestUri: '',
-    };
+    }
   }
 
   componentWillMount() {
-    util.setQRstyle(this.qrstyle, this.props, 'SendTransaction');
+    util.setQRstyle(this.qrstyle, this.props, 'SendTransaction')
   }
 
   componentDidMount() {
     // URI for transaction
-    this.baseRequestUri = 'meta://transaction?t=';
+    this.baseRequestUri = 'meta://transaction?t='
 
     // URI for request
     if(this.props.request != undefined && this.props.request != '') {
-      this.baseRequestUri += this.props.request.params[0].to + '&v=' + this.props.request.params[0].value + '&d=' + this.props.request.params[0].data;
+      this.baseRequestUri += this.props.request.params[0].to + '&v=' + this.props.request.params[0].value + '&d=' + this.props.request.params[0].data
     }
     // URI for to, value and data
     else if(this.props.to != undefined && this.props.to != '') {
       this.baseRequestUri += this.props.to + '&v=' + util.convertVal2Hexd(this.props.value) + '&d=' + util.convertData2Hexd(this.props.data);
     }
     // URI for usage
-    this.baseRequestUri += '&u=' + this.props.usage;
+    this.baseRequestUri += '&u=' + this.props.usage
     
     // URI for callback
-    if (this.props.callbackUrl) this.baseRequestUri += '&callback=' + encodeURIComponent(this.props.callbackUrl);
-    else this.baseRequestUri += '&callback=https%3A%2F%2F' + util.CacheServer.host + '/' + util.CacheServer.stage + '?key=' + this.state.session;
+    if (this.props.callbackUrl) this.baseRequestUri += '&callback=' + encodeURIComponent(this.props.callbackUrl)
+    else this.baseRequestUri += '&callback=https%3A%2F%2F' + util.CacheServer.host + '/' + util.CacheServer.stage + '?key=' + this.state.session
 
-    var cb = (uri) => this.setState({ trxRequestUri: uri });
+    var cb = (uri) => this.setState({ trxRequestUri: uri })
     ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
       if (! err) {
-        console.log('SendTransaction IPFS hash:', ipfsHash[0].hash);
-        cb(ipfsHash[0].hash);
-      } else cb(this.baseRequestUri);
-    });
+        console.log('SendTransaction IPFS hash:', ipfsHash[0].hash)
+        cb(ipfsHash[0].hash)
+      } else cb(this.baseRequestUri)
+    })
   }
 
   onOpenSendTransaction() {
-    if (! this.qrstyle.qrpopup) return;
+    if (! this.qrstyle.qrpopup) return
 
     this.interval = setInterval(() => {
-      this.checkResponse();
-    }, 2000);
+      this.checkResponse()
+    }, 2000)
   }
 
   onCloseSendTransaction() {
-    if (! this.qrstyle.qrpopup) return;
+    if (! this.qrstyle.qrpopup) return
 
-    clearInterval(this.interval);
+    clearInterval(this.interval)
   }
 
   checkResponse() {
     // TxID check
-    https.request({
+    https
+    .request({
       host: util.CacheServer.host,
       path: '/' + util.CacheServer.stage + '?key=' + this.state.session,
     }, (res) => {
-      let data = '';
+      let data = ''
       res.on('data', (chunk) => {
-        data += chunk;
+        data += chunk
       });
       res.on('end', () => {
         if (data !== '') {
-          clearInterval(this.interval);
-          var json = JSON.parse(data);
+          clearInterval(this.interval)
+          var json = JSON.parse(data)
           if (this.props.callback) {
             this.props.callback({
               txid: json['txid'],
               address: json['address'],
-            });
+            })
           }
         }
-      });
-    }).on('error', (err) => {
-      console.log('error', err);
-    }).end();
+      })
+    })
+    .on('error', (err) => {
+      console.log('error', err)
+    })
+    .end()
   }
 
   render() {

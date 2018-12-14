@@ -12,7 +12,7 @@ const POSITIONS = [
 const CacheServer = {
   host: 'cache.metadium.com',
   stage: 'dev'
-};
+}
 
 /**
  * Set QRCode style to dst from src
@@ -21,30 +21,30 @@ const CacheServer = {
  * @param {string} caller name
  */
 function setQRstyle(dst, src, caller) {
-  dst['qrpopup'] = src.qrpopup ? src.qrpopup : true;
-  dst['qrsize'] = src.qrsize > 0 ? src.qrsize : 128;
-  dst['qrvoffset'] = src.qrvoffset >= 0 ? src.qrvoffset : 20;
-  dst['qrpadding'] = src.qrpadding ? src.qrpadding : '1em';
-  dst['qrposition'] = POSITIONS.includes(src.qrposition) ? src.qrposition : 'bottom right';
-  dst['qrtext'] = src.qrtext ? src.qrtext : caller;
+  dst['qrpopup'] = src.qrpopup ? src.qrpopup : true
+  dst['qrsize'] = src.qrsize > 0 ? src.qrsize : 128
+  dst['qrvoffset'] = src.qrvoffset >= 0 ? src.qrvoffset : 20
+  dst['qrpadding'] = src.qrpadding ? src.qrpadding : '1em'
+  dst['qrposition'] = POSITIONS.includes(src.qrposition) ? src.qrposition : 'bottom right'
+  dst['qrtext'] = src.qrtext ? src.qrtext : caller
 }
 
 /**
  * Make session ID randomly, the length can be changed.
  */
 function makeSessionID() {
-    var text = '';
-    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var text = ''
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
     for (var i = 0; i < 8; i++)
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    return text;
+      text += possible.charAt(Math.floor(Math.random() * possible.length))
+    return text
 }
 
 function isHexString(arg) {
   if (arg != undefined && typeof arg === 'string' && arg.length > 2 && arg.substring(0,2) != '0x') {
-    return false;
+    return false
   }
-  return true;
+  return true
 }
 
 /**
@@ -53,9 +53,9 @@ function isHexString(arg) {
  */
 function convertVal2Hexd(value) {
   if (! isHexString(value)) {
-    return '0x' + parseInt(value,10).toString(16);
+    return '0x' + parseInt(value,10).toString(16)
   } 
-  return value;
+  return value
 }
 
 /**
@@ -64,13 +64,13 @@ function convertVal2Hexd(value) {
  */
 function convertData2Hexd(data) {
   if (! isHexString(data)) {
-    var hex = '';
+    var hex = ''
 	  for (var i=0; i < data.length; i++) {
-		  hex += data.charCodeAt(i).toString(16);
+		  hex += data.charCodeAt(i).toString(16)
     }
-    return '0x' + hex;
+    return '0x' + hex
   }
-  return data;
+  return data
 }
 
 export {

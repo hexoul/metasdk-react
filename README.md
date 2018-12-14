@@ -21,8 +21,8 @@ npm i metasdk-react
 If `callbackUrl` will be given as prop, a component shows QR code directly, not popup button.
 
 ```jsx
-import React, { Component } from 'react';
-import { Login, Request, SendTransaction } from 'metasdk-react';
+import React, { Component } from 'react'
+import { Login, Request, SendTransaction } from 'metasdk-react'
 
 class Example extends Component {
   callbackExample(arg) {}

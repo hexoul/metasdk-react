@@ -28,112 +28,115 @@ export default class Request extends Component {
     qrtext: PropTypes.string,
   }
 
-  qrstyle = {};
+  qrstyle = {}
 
   constructor() {
-    super();
-    this.reqinfo = {};
+    super()
+    this.reqinfo = {}
     this.state = {
       session: util.makeSessionID(),
       trxRequestUri: '',
-    };
+    }
   }
 
   componentWillMount() {
-    util.setQRstyle(this.qrstyle, this.props, 'Request');
+    util.setQRstyle(this.qrstyle, this.props, 'Request')
   }
 
   componentDidMount() {
-    const key = new NodeRSA({ b: 2048 });
-    this.pubkey = key.exportKey('public');
-    this.privkey = key.exportKey('private');
+    const key = new NodeRSA({ b: 2048 })
+    this.pubkey = key.exportKey('public')
+    this.privkey = key.exportKey('private')
 
     var pubkey = this.pubkey
       .replace('-----BEGIN PUBLIC KEY-----', '')
       .replace('-----END PUBLIC KEY-----', '')
-      .replace(/\s+|\n\r|\n|\r$/gm, '');
-    pubkey = encodeURIComponent(pubkey);
+      .replace(/\s+|\n\r|\n|\r$/gm, '')
+    pubkey = encodeURIComponent(pubkey)
     
     // URI for usage
-    this.baseRequestUri = 'meta://information?u=' + this.props.usage;
+    this.baseRequestUri = 'meta://information?u=' + this.props.usage
 
     // URI for request
-    this.baseRequestUri += "&r=" + this.props.request.join(',');
+    this.baseRequestUri += "&r=" + this.props.request.join(',')
 
     // URI for callback
-    if (this.props.callbackUrl) this.baseRequestUri += '&callback=' + encodeURIComponent(this.props.callbackUrl);
-    else this.baseRequestUri += '&callback=https%3A%2F%2F' + util.CacheServer.host + '/' + util.CacheServer.stage + '?key=' + this.state.session;
+    if (this.props.callbackUrl) this.baseRequestUri += '&callback=' + encodeURIComponent(this.props.callbackUrl)
+    else this.baseRequestUri += '&callback=https%3A%2F%2F' + util.CacheServer.host + '/' + util.CacheServer.stage + '?key=' + this.state.session
     
     // URI for Meta ID
     //this.baseRequestUri += '&m=' + this.props.metaID;
 
     // URI for pubkey
-    this.baseRequestUri += '&p=' + pubkey;
+    this.baseRequestUri += '&p=' + pubkey
 
-    var cb = (uri) => this.setState({ trxRequestUri: uri });
+    var cb = (uri) => this.setState({ trxRequestUri: uri })
     ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
       if (! err) {
-        console.log('Request IPFS hash:', ipfsHash[0].hash);
-        cb(ipfsHash[0].hash);
-      } else cb(this.baseRequestUri);
+        console.log('Request IPFS hash:', ipfsHash[0].hash)
+        cb(ipfsHash[0].hash)
+      } else cb(this.baseRequestUri)
     });
   }
 
   onOpenRequest() {
-    if (! this.qrstyle.qrpopup) return;
+    if (! this.qrstyle.qrpopup) return
 
     this.interval = setInterval(() => {
-      this.checkResponse();
-    }, 2000);
+      this.checkResponse()
+    }, 2000)
   }
 
   onCloseRequest() {
-    if (! this.qrstyle.qrpopup) return;
+    if (! this.qrstyle.qrpopup) return
 
-    clearInterval(this.interval);
+    clearInterval(this.interval)
   }
 
   checkResponse() {
-    https.request({
+    https
+    .request({
       host: util.CacheServer.host,
       path: '/' + util.CacheServer.stage + '?key=' + this.state.session,
     }, (res) => {
-      let data = '';
+      let data = ''
       res.on('data', (chunk) => {
-        data += chunk;
+        data += chunk
       });
       res.on('end', () => {
         if (data !== '') {
-          clearInterval(this.interval);
-          var responseBytes = Buffer.from(data, 'base64');
+          clearInterval(this.interval)
+          var responseBytes = Buffer.from(data, 'base64')
 
           // Get AES key and encrypted data
-          var encryptedAesKey = responseBytes.slice(0, 256);
-          var encryptedData = responseBytes.slice(256, responseBytes.byteLength);
+          var encryptedAesKey = responseBytes.slice(0, 256)
+          var encryptedData = responseBytes.slice(256, responseBytes.byteLength)
 
           // Decrypt AES key with RSA
-          var secret = crypto.privateDecrypt({ key: this.privkey, padding: constants.RSA_PKCS1_PADDING}, encryptedAesKey );
+          var secret = crypto.privateDecrypt({ key: this.privkey, padding: constants.RSA_PKCS1_PADDING}, encryptedAesKey )
 
           // Decrypt data with AES
-          var aes = crypto.createDecipheriv('aes-256-ecb', secret, '');
-          var result = aes.update(encryptedData);
-          result += aes.final();
+          var aes = crypto.createDecipheriv('aes-256-ecb', secret, '')
+          var result = aes.update(encryptedData)
+          result += aes.final()
 
-          var json = JSON.parse(result);
+          var json = JSON.parse(result)
           this.props.request.map((req) => {
-            if (json['data'][req] == undefined || json['data'][req] == '') return;
+            if (json['data'][req] == undefined || json['data'][req] == '') return
 
-            let data = Buffer.from(json['data'][req], 'base64').toString('utf8');
-            this.reqinfo[req] = data;
-          });
+            let data = Buffer.from(json['data'][req], 'base64').toString('utf8')
+            this.reqinfo[req] = data
+          })
           if (this.props.callback) {
-            this.props.callback(this.reqinfo);
+            this.props.callback(this.reqinfo)
           }
         }
-      });
-    }).on('error', (err) => {
-      console.log('error', err);
-    }).end();
+      })
+    })
+    .on('error', (err) => {
+      console.log('error', err)
+    })
+    .end()
   }
 
   render() {
