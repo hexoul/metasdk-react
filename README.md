@@ -1,8 +1,8 @@
 # metasdk-react
 
-> SDK to communicate between React and App using QRCode
-
 [![NPM](https://img.shields.io/npm/v/metasdk-react.svg)](https://www.npmjs.com/package/metasdk-react) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
+> SDK to communicate between React and App using QRCode
 
 ## Install
 
