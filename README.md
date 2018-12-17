@@ -1,6 +1,8 @@
 # metasdk-react
 
-[![NPM](https://img.shields.io/npm/v/metasdk-react.svg)](https://www.npmjs.com/package/metasdk-react) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![License](http://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/hexoul/go-coinmarketcap/master/LICENSE)
+[![NPM](https://img.shields.io/npm/v/metasdk-react.svg)](https://www.npmjs.com/package/metasdk-react)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 > SDK to communicate between React and App using QRCode
 
@@ -84,6 +86,7 @@ QRCode styles can be set for all components like above example `SendTransaction`
 - `qrtext` sets `Button` text to open QRCode popup
 
 ## Test
+
 ```
 cd metasdk-react
 npm start
@@ -91,10 +94,3 @@ npm start
 cd example
 npm start
 ```
-
-## Thanks to
-[create-react-library](https://www.npmjs.com/package/create-react-library)
-
-## License
-
-MIT © [hexoul](https://github.com/hexoul)
