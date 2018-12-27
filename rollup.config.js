@@ -29,7 +29,11 @@ export default {
     url(),
     babel({
       exclude: ['node_modules/**'],
-      plugins: ['external-helpers']
+      runtimeHelpers: true,
+      plugins: [
+        'external-helpers',
+        'transform-runtime'
+      ]
     }),
     resolve(),
     commonjs()
