@@ -6,6 +6,19 @@ import { Button, Popup } from 'semantic-ui-react'
 import * as util from '../util'
 import ipfs from '../ipfs'
 
+import { qrcode, modes, ecLevel } from 'qrcode.es'
+var qrCodeOptions = {
+  size: 256,
+  // ecLevel: ecLevel.QUARTILE,
+  ecLevel: ecLevel.LOW,
+  minVersion: 8,
+  background: '#fff',
+  mode: modes.DRAW_WITH_IMAGE_BOX,
+  radius: 0.0,
+  image: 'https://raw.githubusercontent.com/METADIUM/metadium-token-contract/master/misc/Metadium_Logo_Vertical_PNG.png',
+  mSize: 0.15,
+}
+
 var QRCode = require('qrcode.react')
 var https = require('https')
 
@@ -29,12 +42,23 @@ export default class Login extends Component {
     super()
     this.state = {
       session: util.makeSessionID(),
-      trxRequestUri: ''
+      trxRequestUri: '',
+      qrCode: false
     }
   }
 
   componentWillMount () {
     util.setQRstyle(this.qrstyle, this.props, 'Login')
+    qrCodeOptions.size = this.qrstyle['qrsize']
+  }
+
+  async loadQrCode(uri) {
+    //Element must be an instance of HTMLCanvasElement or HTMLDivElement
+    const element = document.getElementById('qrCode')
+    //Initializing the QrCode
+    const qrCode = new qrcode(element)
+    // Function that generates the QrCode
+    qrCode.generate(uri, qrCodeOptions).then(() => this.setState({ qrCode: true }))
   }
 
   componentDidMount () {
@@ -45,7 +69,7 @@ export default class Login extends Component {
     if (this.props.callbackUrl) this.baseRequestUri += '&callback=' + encodeURIComponent(this.props.callbackUrl)
     else this.baseRequestUri += '&callback=https%3A%2F%2F' + util.CacheServer.host + '/' + util.CacheServer.stage + '?key=' + this.state.session
 
-    var cb = (uri) => this.setState({ trxRequestUri: uri })
+    var cb = (uri) => this.setState({ trxRequestUri: uri }, () => this.loadQrCode(uri))
     ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
       if (!err) {
         console.log('IPFS hash:', ipfsHash[0].hash)
@@ -101,6 +125,7 @@ export default class Login extends Component {
   render () {
     return (
       <div>
+        <div id='qrCode' />
         {!this.state.trxRequestUri &&
           <center>
             Making QRcode through IPFS...
