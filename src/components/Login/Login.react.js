@@ -2,24 +2,11 @@ import React, { Component } from 'react'
 import ReactLoading from 'react-loading'
 import PropTypes from 'prop-types'
 import { Button, Popup } from 'semantic-ui-react'
+import { qrcode } from 'qrcode.es'
 
 import * as util from '../util'
 import ipfs from '../ipfs'
 
-import { qrcode, modes, ecLevel } from 'qrcode.es'
-var qrCodeOptions = {
-  size: 256,
-  // ecLevel: ecLevel.QUARTILE,
-  ecLevel: ecLevel.LOW,
-  minVersion: 8,
-  background: '#fff',
-  mode: modes.DRAW_WITH_IMAGE_BOX,
-  radius: 0.0,
-  image: 'https://raw.githubusercontent.com/METADIUM/metadium-token-contract/master/misc/Metadium_Logo_Vertical_PNG.png',
-  mSize: 0.15,
-}
-
-var QRCode = require('qrcode.react')
 var https = require('https')
 
 export default class Login extends Component {
@@ -49,7 +36,6 @@ export default class Login extends Component {
 
   componentWillMount () {
     util.setQRstyle(this.qrstyle, this.props, 'Login')
-    qrCodeOptions.size = this.qrstyle['qrsize']
   }
 
   async loadQrCode(uri) {
@@ -59,7 +45,7 @@ export default class Login extends Component {
     // Initializing the QrCode
     const qrCode = new qrcode(element)
     // Function that generates the QrCode
-    qrCode.generate(uri, qrCodeOptions).then(() => this.setState({ qrCode: true }))
+    qrCode.generate(uri, util.getQrCodeOptions(this.qrstyle['qrsize'])).then(() => this.setState({ qrCode: true }))
   }
 
   componentDidMount () {

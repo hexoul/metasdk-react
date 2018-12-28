@@ -1,3 +1,5 @@
+import { modes, ecLevel } from 'qrcode.es'
+
 const POSITIONS = [
   'top left',
   'top center',
@@ -72,11 +74,26 @@ function convertData2Hexd (data) {
   return data
 }
 
+function getQrCodeOptions (size) {
+  return {
+    size: size,
+    // ecLevel: ecLevel.QUARTILE,
+    ecLevel: ecLevel.LOW,
+    minVersion: 8,
+    background: '#fff',
+    mode: modes.DRAW_WITH_IMAGE_BOX,
+    radius: 0.0,
+    image: 'https://raw.githubusercontent.com/METADIUM/metadium-token-contract/master/misc/Metadium_Logo_Vertical_PNG.png',
+    mSize: 0.15,
+  }
+} 
+
 export {
   POSITIONS,
   CacheServer,
   setQRstyle,
   makeSessionID,
   convertVal2Hexd,
-  convertData2Hexd
+  convertData2Hexd,
+  getQrCodeOptions
 }
