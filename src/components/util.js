@@ -21,7 +21,7 @@ const CacheServer = {
  * @param {string} caller name
  */
 function setQRstyle (dst, src, caller) {
-  dst['qrpopup'] = src.qrpopup ? src.qrpopup : true
+  dst['qrpopup'] = src.qrpopup ? src.qrpopup : false
   dst['qrsize'] = src.qrsize > 0 ? src.qrsize : 128
   dst['qrvoffset'] = src.qrvoffset >= 0 ? src.qrvoffset : 20
   dst['qrpadding'] = src.qrpadding ? src.qrpadding : '1em'

@@ -47,6 +47,7 @@ export default class App extends Component {
           id='loginID'
           data='testmsg'
           service='example'
+          qrpopup={true}
           callback={this.callbackExample}
         />
         <hr />
@@ -56,8 +57,9 @@ export default class App extends Component {
           request={this.request}
           usage='example'
           metaID='0x31a46cd5FF7d0DC32b93149dB1A695b68Fc1aa00'
-          callback={this.requestCallbackExample}
           qrsize={256}
+          qrpopup={true}
+          callback={this.requestCallbackExample}
         />
         <hr />
 
@@ -65,6 +67,7 @@ export default class App extends Component {
           id='sendTransactionId1'
           request={this.trxRequest}
           usage='method'
+          qrpopup={true}
           callback={this.callbackExample}
         />
         <hr />
@@ -89,6 +92,7 @@ export default class App extends Component {
           qrpadding='2em'
           qrposition='bottom right'
           qrtext='SendTransaction'
+          qrpopup={true}
           callback={this.callbackExample}
         />
       </div>

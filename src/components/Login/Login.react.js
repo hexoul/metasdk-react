@@ -38,8 +38,8 @@ export default class Login extends Component {
 
   qrstyle = {}
 
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
     this.state = {
       session: util.makeSessionID(),
       trxRequestUri: '',
@@ -53,9 +53,10 @@ export default class Login extends Component {
   }
 
   async loadQrCode(uri) {
-    //Element must be an instance of HTMLCanvasElement or HTMLDivElement
-    const element = document.getElementById('qrCode')
-    //Initializing the QrCode
+    // Element must be an instance of HTMLCanvasElement or HTMLDivElement
+    let element = document.getElementById(this.state.session)
+    if (!element) return
+    // Initializing the QrCode
     const qrCode = new qrcode(element)
     // Function that generates the QrCode
     qrCode.generate(uri, qrCodeOptions).then(() => this.setState({ qrCode: true }))
@@ -69,7 +70,7 @@ export default class Login extends Component {
     if (this.props.callbackUrl) this.baseRequestUri += '&callback=' + encodeURIComponent(this.props.callbackUrl)
     else this.baseRequestUri += '&callback=https%3A%2F%2F' + util.CacheServer.host + '/' + util.CacheServer.stage + '?key=' + this.state.session
 
-    var cb = (uri) => this.setState({ trxRequestUri: uri }, () => this.loadQrCode(uri))
+    var cb = (uri) => this.setState({ trxRequestUri: uri }, () => { if (!this.props.qrpopup) this.loadQrCode(uri) })
     ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
       if (!err) {
         console.log('IPFS hash:', ipfsHash[0].hash)
@@ -80,6 +81,8 @@ export default class Login extends Component {
 
   onOpenLogin () {
     if (!this.qrstyle.qrpopup) return
+
+    window.setTimeout(() => this.loadQrCode(this.state.trxRequestUri), 500)
 
     this.interval = setInterval(() => {
       this.checkResponse()
@@ -125,17 +128,14 @@ export default class Login extends Component {
   render () {
     return (
       <div>
-        <div id='qrCode' />
         {!this.state.trxRequestUri &&
           <center>
             Making QRcode through IPFS...
             <ReactLoading type='spin' color='#1DA57A' height='50px' width='50px' />
           </center>
         }
-        {this.state.trxRequestUri && this.props.callbackUrl &&
-          <QRCode value={this.state.trxRequestUri} size={this.qrstyle['qrsize']} />
-        }
-        {this.state.trxRequestUri &&
+        {this.props.qrpopup ?
+          this.state.trxRequestUri &&
           <Popup
             trigger={
               <Button id={this.props.id}>
@@ -148,10 +148,14 @@ export default class Login extends Component {
             verticalOffset={this.qrstyle['qrvoffset']}
             position={this.qrstyle['qrposition']}
             style={{
+              width: this.qrstyle['qrsize'],
+              height: this.qrstyle['qrsize'],
               padding: this.qrstyle['qrpadding'],
               backgroundColor: 'white' }}>
-            <QRCode value={this.state.trxRequestUri} size={this.qrstyle['qrsize']} />
+            <div id={this.state.session} />
           </Popup>
+          :
+          <div id={this.state.session} />
         }
       </div>
     )
