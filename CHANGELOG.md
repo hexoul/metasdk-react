@@ -13,4 +13,8 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* **login:** Make QR code with logo ([941d518](https://github.com/hexoul/metasdk-react/commit/679ce82))
+* **login:**
+- Make QR code with logo ([941d518](https://github.com/hexoul/metasdk-react/commit/941d518))
+- Replace qrcode.react with qrcode.es and update README ([1e9bab7](https://github.com/hexoul/metasdk-react/commit/1e9bab7))
+
+* **util:** Refactoring for qrcode.es ([4c9a7e3](https://github.com/hexoul/metasdk-react/commit/4c9a7e3))
