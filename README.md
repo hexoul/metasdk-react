@@ -35,6 +35,7 @@ class Example extends Component {
         <Login
           data='testmsg'
           service='example'
+          qrpopup={true}
           callback={this.callbackExample}
         />
 
@@ -49,6 +50,7 @@ class Example extends Component {
           id='sendTransactionByRequest'
           request={this.trxRequest}
           usage='method'
+          qrpopup={true}
           callback={this.callbackExample}
         />
 
@@ -70,6 +72,7 @@ class Example extends Component {
           qrpadding='2em'
           qrposition='bottom right'
           qrtext='SendTransaction'
+          qrpopup={true}
           callback={this.callbackExample}
         />
       </div>
@@ -79,7 +82,7 @@ class Example extends Component {
 ```
 
 QRCode styles can be set for all components like above example `SendTransaction`
-- `qrpopup` decides if QRCode exists within popup or not. default: `true`
+- `qrpopup` decides if QRCode exists within popup or not. default: `false`
 - `qrsize` changes the size of QRCode by pixel. default: `128`
 - `qrvoffset` is a vertical offset from origin. default: `20`
 - `qrpadding` applies padding thickness of QRCode as style. default: `1em`
