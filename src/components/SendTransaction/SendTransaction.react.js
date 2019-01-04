@@ -6,7 +6,6 @@ import { Button, Popup } from 'semantic-ui-react'
 import * as util from '../util'
 import ipfs from '../ipfs'
 
-var QRCode = require('qrcode.react')
 var https = require('https')
 
 export default class SendTransaction extends Component {
@@ -32,7 +31,8 @@ export default class SendTransaction extends Component {
     super()
     this.state = {
       session: util.makeSessionID(),
-      trxRequestUri: ''
+      trxRequestUri: '',
+      qrCode: false
     }
   }
 
@@ -58,7 +58,9 @@ export default class SendTransaction extends Component {
     if (this.props.callbackUrl) this.baseRequestUri += '&callback=' + encodeURIComponent(this.props.callbackUrl)
     else this.baseRequestUri += '&callback=https%3A%2F%2F' + util.CacheServer.host + '/' + util.CacheServer.stage + '?key=' + this.state.session
 
-    var cb = (uri) => this.setState({ trxRequestUri: uri })
+    var cb = (uri) => this.setState({ trxRequestUri: uri }, () => {
+      if (!this.props.qrpopup) util.loadQrCode(this.state.session, uri, this.qrstyle['qrsize'], () => this.setState({ qrCode: true }))
+    })
     ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
       if (!err) {
         console.log('SendTransaction IPFS hash:', ipfsHash[0].hash)
@@ -69,6 +71,8 @@ export default class SendTransaction extends Component {
 
   onOpenSendTransaction () {
     if (!this.qrstyle.qrpopup) return
+
+    window.setTimeout(() => util.loadQrCode(this.state.session, this.state.trxRequestUri, this.qrstyle['qrsize'], () => this.setState({ qrCode: true })), 500)
 
     this.interval = setInterval(() => {
       this.checkResponse()
@@ -120,10 +124,8 @@ export default class SendTransaction extends Component {
             <ReactLoading type='spin' color='#1DA57A' height='50px' width='50px' />
           </center>
         }
-        {this.state.trxRequestUri && this.props.callbackUrl &&
-          <QRCode value={this.state.trxRequestUri} size={this.qrstyle['qrsize']} />
-        }
-        {this.state.trxRequestUri && !this.props.callbackUrl &&
+        {this.props.qrpopup ?
+          this.state.trxRequestUri &&
           <Popup
             trigger={
               <Button id={this.props.id}>
@@ -136,11 +138,15 @@ export default class SendTransaction extends Component {
             verticalOffset={this.qrstyle['qrvoffset']}
             position={this.qrstyle['qrposition']}
             style={{
+              width: this.qrstyle['qrsize'],
+              height: this.qrstyle['qrsize'],
               padding: this.qrstyle['qrpadding'],
               backgroundColor: 'white' }}
           >
-            <QRCode value={this.state.trxRequestUri} size={this.qrstyle['qrsize']} />
+            <div id={this.state.session} />
           </Popup>
+          :
+          <div id={this.state.session} />
         }
       </div>
     )
