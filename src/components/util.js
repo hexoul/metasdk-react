@@ -1,4 +1,4 @@
-import { modes, ecLevel } from 'qrcode.es'
+import { qrcode, modes, ecLevel } from 'qrcode.es'
 
 const POSITIONS = [
   'top left',
@@ -86,7 +86,17 @@ function getQrCodeOptions (size) {
     image: 'https://raw.githubusercontent.com/METADIUM/metadium-token-contract/master/misc/Metadium_Logo_Vertical_PNG.png',
     mSize: 0.15,
   }
-} 
+}
+
+async function loadQrCode (eid, uri, qrsize, cb) {
+  // Element must be an instance of HTMLCanvasElement or HTMLDivElement
+  let element = document.getElementById(eid)
+  if (!element) return
+  // Initializing the QrCode
+  const qrCode = new qrcode(element)
+  // Function that generates the QrCode
+  qrCode.generate(uri, getQrCodeOptions(qrsize)).then(() => cb())
+}
 
 export {
   POSITIONS,
@@ -95,5 +105,6 @@ export {
   makeSessionID,
   convertVal2Hexd,
   convertData2Hexd,
-  getQrCodeOptions
+  getQrCodeOptions,
+  loadQrCode
 }

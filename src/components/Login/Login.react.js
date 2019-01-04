@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import ReactLoading from 'react-loading'
 import PropTypes from 'prop-types'
 import { Button, Popup } from 'semantic-ui-react'
-import { qrcode } from 'qrcode.es'
 
 import * as util from '../util'
 import ipfs from '../ipfs'
@@ -38,16 +37,6 @@ export default class Login extends Component {
     util.setQRstyle(this.qrstyle, this.props, 'Login')
   }
 
-  async loadQrCode(uri) {
-    // Element must be an instance of HTMLCanvasElement or HTMLDivElement
-    let element = document.getElementById(this.state.session)
-    if (!element) return
-    // Initializing the QrCode
-    const qrCode = new qrcode(element)
-    // Function that generates the QrCode
-    qrCode.generate(uri, util.getQrCodeOptions(this.qrstyle['qrsize'])).then(() => this.setState({ qrCode: true }))
-  }
-
   componentDidMount () {
     // URI for service
     this.baseRequestUri = 'meta://authentication?usage=login&service=' + this.props.service
@@ -56,7 +45,9 @@ export default class Login extends Component {
     if (this.props.callbackUrl) this.baseRequestUri += '&callback=' + encodeURIComponent(this.props.callbackUrl)
     else this.baseRequestUri += '&callback=https%3A%2F%2F' + util.CacheServer.host + '/' + util.CacheServer.stage + '?key=' + this.state.session
 
-    var cb = (uri) => this.setState({ trxRequestUri: uri }, () => { if (!this.props.qrpopup) this.loadQrCode(uri) })
+    var cb = (uri) => this.setState({ trxRequestUri: uri }, () => {
+      if (!this.props.qrpopup) util.loadQrCode(this.state.session, uri, this.qrstyle['qrsize'], () => this.setState({ qrCode: true }))
+    })
     ipfs.add([Buffer.from(this.baseRequestUri)], (err, ipfsHash) => {
       if (!err) {
         console.log('IPFS hash:', ipfsHash[0].hash)
@@ -68,7 +59,7 @@ export default class Login extends Component {
   onOpenLogin () {
     if (!this.qrstyle.qrpopup) return
 
-    window.setTimeout(() => this.loadQrCode(this.state.trxRequestUri), 500)
+    window.setTimeout(() => util.loadQrCode(this.state.session, this.state.trxRequestUri, this.qrstyle['qrsize'], () => this.setState({ qrCode: true })), 500)
 
     this.interval = setInterval(() => {
       this.checkResponse()
