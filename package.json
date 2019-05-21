@@ -1,6 +1,6 @@
 {
   "name": "metasdk-react",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "SDK to communicate between React and App using QRCode",
   "author": "hexoul",
   "license": "MIT",
@@ -69,7 +69,7 @@
   ],
   "dependencies": {
     "https": "^1.0.0",
-    "ipfs-api": "^24.0.2",
+    "ipfs-http-client": "^31.1.0",
     "node-rsa": "^1.0.1",
     "qrcode.es": "^1.0.0",
     "react-loading": "^2.0.3",
